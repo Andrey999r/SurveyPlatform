@@ -1,0 +1,20 @@
+﻿@model Survey
+
+@{
+    ViewData["Title"] = "Удалить опрос";
+}
+
+<h1>Удалить опрос</h1>
+
+<h3>Вы действительно хотите удалить этот опрос?</h3>
+
+<div>
+    <h4>@Model.Title</h4>
+    <p>@Model.Description</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Удалить</button>
+    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+</form>

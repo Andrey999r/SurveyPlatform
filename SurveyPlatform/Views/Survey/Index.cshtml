@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Survey>
+
+@{
+    ViewData["Title"] = "Опросы";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2>Список опросов</h2>
+        <a asp-action="Create" class="btn btn-primary mt-3">Создать новый опрос</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var survey in Model)
+        {
+            <tr>
+                <td>@survey.Title</td>
+                <td>@survey.Description</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@survey.Id" class="btn btn-danger btn-sm">Удалить</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

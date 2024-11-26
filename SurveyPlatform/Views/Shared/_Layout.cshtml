@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - SurveyPlatform</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area=""
+               asp-controller="@((User.Identity.IsAuthenticated) ? "Home" : "Home")"
+               asp-action="@((User.Identity.IsAuthenticated) ? "Privacy" : "Index")">
+                SurveyPlatform
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                <ul class="navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white mx-2" asp-controller="Survey" asp-action="Index" style="font-size: 16px;">
+                            Мои опросы
+                        </a>
+                    </li>
+                    <!-- Условие: скрываем кнопку "Создать опрос" на странице создания -->
+                    @if (!(ViewContext.RouteData.Values["controller"]?.ToString() == "Survey" &&
+                    ViewContext.RouteData.Values["action"]?.ToString() == "Create"))
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-success text-white mx-2" asp-controller="Survey" asp-action="Create" style="font-size: 16px;">
+                            Создать опрос
+                        </a>
+                    </li>
+                    }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @User.Identity.Name
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выйти</a></li>
+                        </ul>
+                    </li>
+                    }
+                    else
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Register">Регистрация</a>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="mt-auto text-center py-3 border-top">
+    <div class="container">
+        &copy; 2024 - SurveyPlatform
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@RenderSection("Scripts", required: false)
+</body>
+</html>

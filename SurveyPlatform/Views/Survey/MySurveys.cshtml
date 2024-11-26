@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Survey>
+@{
+ViewData["Title"] = "Мои опросы";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Создать новый опрос</a>
+
+@if (Model != null && Model.Any())
+{
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var survey in Model)
+    {
+    <tr>
+        <td>@survey.Title</td>
+        <td>@survey.Description</td>
+        <td>
+            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@survey.Id">Просмотр</a>
+            <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@survey.Id">Редактировать</a>
+            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@survey.Id">Удалить</a>
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>
+}
+else
+{
+<p>У вас пока нет опросов.</p>
+}

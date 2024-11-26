@@ -1,0 +1,42 @@
+﻿@model Survey
+
+@{
+    ViewData["Title"] = "Детали опроса";
+}
+
+<h2>@Model.Title</h2>
+<p>@Model.Description</p>
+
+<hr />
+
+<h3>Вопросы</h3>
+@if (Model.Questions != null && Model.Questions.Any())
+{
+    <ul class="list-group">
+        @foreach (var question in Model.Questions)
+        {
+            <li class="list-group-item">
+                <strong>@question.Text</strong>
+                <span class="badge badge-info">@question.Type</span>
+
+                @if (question.AnswerOptions != null && question.AnswerOptions.Any())
+                {
+                    <ul>
+                        @foreach (var option in question.AnswerOptions)
+                        {
+                            <li>@option.Text</li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>В этом опросе пока нет вопросов.</p>
+}
+
+<a asp-controller="Question" asp-action="Create" asp-route-surveyId="@Model.Id" class="btn btn-primary mt-3">
+    Добавить вопрос
+</a>
