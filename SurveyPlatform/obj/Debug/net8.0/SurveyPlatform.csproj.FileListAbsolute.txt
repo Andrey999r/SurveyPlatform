@@ -167,3 +167,4 @@ C:\Users\gyman\RiderProjects\SurveyPlatform\surveyplatform\obj\Debug\net8.0\refi
 C:\Users\gyman\RiderProjects\SurveyPlatform\surveyplatform\obj\Debug\net8.0\SurveyPlatform.pdb
 C:\Users\gyman\RiderProjects\SurveyPlatform\surveyplatform\obj\Debug\net8.0\SurveyPlatform.genruntimeconfig.cache
 C:\Users\gyman\RiderProjects\SurveyPlatform\surveyplatform\obj\Debug\net8.0\ref\SurveyPlatform.dll
+C:\Users\gyman\RiderProjects\SurveyPlatform\surveyplatform\obj\Debug\net8.0\SurveyPlatform.sourcelink.json

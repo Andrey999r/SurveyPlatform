@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Views\Response\TakeSurvey.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Question\Create.cshtml" />
     </ItemGroup>
 
 </Project>

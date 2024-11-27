@@ -21,7 +21,8 @@ public class SurveyController : Controller
         var surveys = await _context.Surveys.ToListAsync();
         return View(surveys);
     }
-
+    
+    [HttpGet]
     // GET: /Survey/Create
     [Authorize] // Требуется авторизация
     public IActionResult Create()
@@ -31,17 +32,17 @@ public class SurveyController : Controller
     // POST: /Survey/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize] // Требуется авторизация
     public async Task<IActionResult> Create(Survey survey)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(survey);
+            _context.Surveys.Add(survey);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", new { id = survey.Id });
         }
         return View(survey);
     }
+
 
     // GET: /Survey/Delete/5
     public async Task<IActionResult> Delete(int? id)
@@ -72,23 +73,29 @@ public class SurveyController : Controller
         return RedirectToAction("Index");
     }
     // GET: /Survey/Details/5
-    public async Task<IActionResult> Details(int? id)
+   
+    public IActionResult AddQuestion(int id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        var survey = _context.Surveys.Find(id);
+        if (survey == null) return NotFound();
 
+        ViewBag.SurveyId = id;
+        return View();
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
         var survey = await _context.Surveys
-            .Include(s => s.Questions) // Подключаем связанные вопросы
-            .ThenInclude(q => q.AnswerOptions) // Подключаем варианты ответов
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(s => s.Id == id); // Загружаем только опрос без вопросов
 
         if (survey == null)
         {
             return NotFound();
         }
 
-        return View(survey);
+        return View(survey); // Передаём модель Survey в представление
     }
+  
+
+
 }

@@ -1,25 +1,34 @@
-﻿@model Survey
+﻿@model SurveyPlatform.Models.Survey
 
 @{
     ViewData["Title"] = "Создать опрос";
 }
 
-<h1>Создать опрос</h1>
+<h2>Создать опрос</h2>
 
 <form asp-action="Create" method="post">
     <div class="form-group">
-        <label asp-for="Title"></label>
+        <label asp-for="Title">Название</label>
         <input asp-for="Title" class="form-control" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Description"></label>
+        <label asp-for="Description">Описание</label>
         <textarea asp-for="Description" class="form-control"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-success">Создать</button>
 </form>
 
+@if (!ViewData.ModelState.IsValid)
+{
+<div class="alert alert-danger">
+    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+    <p>@error.ErrorMessage</p>
+    }
+</div>
+}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
