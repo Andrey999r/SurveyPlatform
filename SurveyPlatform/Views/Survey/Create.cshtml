@@ -1,34 +1,144 @@
 ﻿@model SurveyPlatform.Models.Survey
 
 @{
-    ViewData["Title"] = "Создать опрос";
+ViewData["Title"] = "Создать опрос";
 }
 
 <h2>Создать опрос</h2>
 
 <form asp-action="Create" method="post">
     <div class="form-group">
-        <label asp-for="Title">Название</label>
-        <input asp-for="Title" class="form-control" />
+        <label for="Title">Название опроса</label>
+        <input asp-for="Title" class="form-control" placeholder="Введите название" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Description">Описание</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
+        <label for="Description">Описание</label>
+        <textarea asp-for="Description" class="form-control" placeholder="Введите описание"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-success">Создать</button>
+
+    <div id="questions-container" class="mt-4">
+        <h4>Вопросы</h4>
+        <div class="question-item mb-3">
+            <div class="row">
+                <div class="col-md-1">
+                    <label>ID</label>
+                    <input type="text" class="form-control question-id" value="1" readonly />
+                </div>
+                <div class="col-md-7">
+                    <label>Введите вопрос</label>
+                    <input type="text" name="Questions[]" class="form-control question-text" placeholder="Введите вопрос" />
+                </div>
+                <div class="col-md-2">
+                    <label>Тип вопроса</label>
+                    <select name="QuestionTypes[]" class="form-control question-type">
+                        <option value="text">Текстовый ввод</option>
+                        <option value="checkbox">Чекбоксы</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Ответы</label>
+                    <div class="answer-section">
+                        <input type="text" name="CorrectAnswers[]" class="form-control correct-answer" placeholder="Введите правильный ответ (или оставьте пустым для ручной проверки)" />
+                        <div class="checkbox-options mt-2 d-none">
+                            <button type="button" class="btn btn-sm btn-secondary add-option-btn">Добавить вариант</button>
+                            <ul class="option-list mt-2"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span asp-validation-for="Questions" class="text-danger"></span>
+
+    <button type="button" id="add-question-btn" class="btn btn-primary mt-3">Добавить вопрос</button>
+    <button type="submit" class="btn btn-success mt-3">Создать</button>
 </form>
 
-@if (!ViewData.ModelState.IsValid)
-{
-<div class="alert alert-danger">
-    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-    {
-    <p>@error.ErrorMessage</p>
-    }
-</div>
-}
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let questionCounter = 1;
+
+        // Добавление нового вопроса
+        document.getElementById('add-question-btn').addEventListener('click', function () {
+            questionCounter++;
+            const questionContainer = document.getElementById('questions-container');
+            const newQuestionHtml = `
+                <div class="question-item mb-3">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>ID</label>
+                            <input type="text" class="form-control question-id" value="${questionCounter}" readonly />
+                        </div>
+                        <div class="col-md-7">
+                            <label>Введите вопрос</label>
+                            <input type="text" name="Questions[]" class="form-control question-text" placeholder="Введите вопрос" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>Тип вопроса</label>
+                            <select name="QuestionTypes[]" class="form-control question-type">
+                                <option value="text">Текстовый ввод</option>
+                                <option value="checkbox">Чекбоксы</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Ответы</label>
+                            <div class="answer-section">
+                                <input type="text" name="CorrectAnswers[]" class="form-control correct-answer" placeholder="Введите правильный ответ (или оставьте пустым для ручной проверки)" />
+                                <div class="checkbox-options mt-2 d-none">
+                                    <button type="button" class="btn btn-sm btn-secondary add-option-btn">Добавить вариант</button>
+                                    <ul class="option-list mt-2"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            questionContainer.insertAdjacentHTML('beforeend', newQuestionHtml);
+        });
+
+        // Управление изменением типа вопроса
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.classList.contains('question-type')) {
+                const questionItem = e.target.closest('.question-item');
+                const answerSection = questionItem.querySelector('.answer-section');
+                const correctAnswerField = answerSection.querySelector('.correct-answer');
+                const checkboxOptions = answerSection.querySelector('.checkbox-options');
+
+                if (e.target.value === 'checkbox') {
+                    correctAnswerField.classList.add('d-none');
+                    checkboxOptions.classList.remove('d-none');
+                } else {
+                    correctAnswerField.classList.remove('d-none');
+                    checkboxOptions.classList.add('d-none');
+                }
+            }
+        });
+
+        // Добавление вариантов ответа для чекбоксов
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('add-option-btn')) {
+                const optionList = e.target.nextElementSibling;
+                const newOptionHtml = `
+                        <li class="option-item">
+                            <input type="text" name="OptionValues[]" class="form-control mb-2" placeholder="Введите вариант ответа" />
+                        </li>`;
+                optionList.insertAdjacentHTML('beforeend', newOptionHtml);
+            }
+        });
+
+        // Проверка наличия вопросов перед отправкой формы
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const questionInputs = document.querySelectorAll('.question-text');
+            const hasQuestions = Array.from(questionInputs).some(input => input.value.trim() !== '');
+
+            if (!hasQuestions) {
+                alert('Добавьте хотя бы один вопрос.');
+                e.preventDefault(); // Отменяем отправку формы
+            }
+        });
+    });
+</script>
 }

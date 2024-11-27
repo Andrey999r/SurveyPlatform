@@ -1,20 +1,20 @@
-﻿@model SurveyPlatform.Models.Survey
+﻿<h2>Детали опроса</h2>
 
-@{
-    ViewData["Title"] = "Детали опроса";
-}
-
-<div class="container mt-5">
-    <h2 class="mb-4">Детали опроса</h2>
-
-    <div class="card">
-        <div class="card-header">
-            <h4>@Model.Title</h4>
-        </div>
-        <div class="card-body">
-            <p>@Model.Description</p>
-        </div>
-    </div>
-
-    <a asp-controller="Survey" asp-action="Index" class="btn btn-primary mt-3">Назад к списку опросов</a>
-</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Вопрос</th>
+        <th>Правильный ответ</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var detail in ViewBag.SurveyDetails)
+    {
+        <tr>
+            <td>@detail.Question</td>
+            <td>@detail.CorrectAnswer</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<a asp-action="Index" class="btn btn-primary">Назад к списку опросов</a>

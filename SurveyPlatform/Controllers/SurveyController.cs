@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 using SurveyPlatform.Models;
 
 namespace SurveyPlatform.Controllers;
@@ -32,34 +33,40 @@ public class SurveyController : Controller
     // POST: /Survey/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Survey survey)
+    public async Task<IActionResult> Create(Survey model, List<string> Questions, List<string> CorrectAnswers, List<string> QuestionTypes)
     {
+        if (Questions == null || Questions.Count == 0 || Questions.All(string.IsNullOrWhiteSpace))
+        {
+            ModelState.AddModelError("Questions", "Добавьте хотя бы один вопрос.");
+        }
         if (ModelState.IsValid)
         {
-            _context.Surveys.Add(survey);
+            var formattedQuestions = new List<string>();
+            var formattedCorrectAnswers = new List<string>();
+
+            for (int i = 0; i < Questions.Count; i++)
+            {
+                string question = Questions[i];
+                string correctAnswer = string.IsNullOrWhiteSpace(CorrectAnswers[i]) ? "Ручная проверка" : CorrectAnswers[i];
+
+                formattedQuestions.Add($"{question} (Тип: {QuestionTypes[i]})");
+                formattedCorrectAnswers.Add(correctAnswer);
+            }
+
+            model.Questions = string.Join("\n", formattedQuestions);
+            model.CorrectAnswers = string.Join(";", formattedCorrectAnswers);
+
+            _context.Surveys.Add(model);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", new { id = survey.Id });
+
+            return RedirectToAction(nameof(Index));
         }
-        return View(survey);
+        return View(model);
     }
 
 
     // GET: /Survey/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
-            return NotFound();
-
-        var survey = await _context.Surveys.FirstOrDefaultAsync(m => m.Id == id);
-        if (survey == null)
-            return NotFound();
-
-        return View(survey);
-    }
-
-    // POST: /Survey/Delete/5
-
-    [HttpPost, ActionName("DeleteConfirmed")]
+    [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
@@ -69,33 +76,39 @@ public class SurveyController : Controller
             _context.Surveys.Remove(survey);
             await _context.SaveChangesAsync();
         }
-
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
+    // POST: /Survey/Delete/5
+
+  
     // GET: /Survey/Details/5
    
-    public IActionResult AddQuestion(int id)
-    {
-        var survey = _context.Surveys.Find(id);
-        if (survey == null) return NotFound();
-
-        ViewBag.SurveyId = id;
-        return View();
-    }
+  
 
     public async Task<IActionResult> Details(int id)
     {
-        var survey = await _context.Surveys
-            .FirstOrDefaultAsync(s => s.Id == id); // Загружаем только опрос без вопросов
+        var survey = await _context.Surveys.FindAsync(id);
 
         if (survey == null)
         {
             return NotFound();
         }
 
-        return View(survey); // Передаём модель Survey в представление
+        var questions = survey.Questions.Split('\n');
+        var correctAnswers = survey.CorrectAnswers.Split(';');
+
+        var viewModel = questions.Select((question, index) => new
+        {
+            Question = question,
+            CorrectAnswer = correctAnswers[index] == "Ручная проверка" ? "Ответ проверяется вручную автором" : correctAnswers[index]
+        });
+
+        ViewBag.SurveyDetails = viewModel;
+
+        return View(survey);
     }
-  
+
+ 
 
 
 }
