@@ -10,39 +10,31 @@
 <body class="d-flex flex-column min-vh-100">
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area=""
-               asp-controller="Home"
-               asp-action="@((User.Identity.IsAuthenticated) ? "Privacy" : "Index")">
-                SurveyPlatform
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+        <div class="container">
+            <!-- Ссылка на Privacy -->
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Privacy">SurveyPlatform</a>
+
+            <!-- Проверка на отображение навигации -->
+            @if (!(ViewContext.RouteData.Values["controller"]?.ToString() == "Survey" &&
+            (ViewContext.RouteData.Values["action"]?.ToString() == "ThankYou" ||
+            ViewContext.RouteData.Values["action"]?.ToString() == "Take")))
+            {
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
                     @if (User.Identity.IsAuthenticated)
                     {
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white mx-2" asp-controller="Survey" asp-action="Index" style="font-size: 16px;">
-                            Мои опросы
-                        </a>
+                        <a class="nav-link" asp-controller="Survey" asp-action="Index">Мои опросы</a>
                     </li>
-                    @if (!(ViewContext.RouteData.Values["controller"]?.ToString() == "Survey" &&
-                    ViewContext.RouteData.Values["action"]?.ToString() == "Create"))
-                    {
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-success text-white mx-2" asp-controller="Survey" asp-action="Create" style="font-size: 16px;">
-                            Создать опрос
-                        </a>
-                    </li>
-                    }
+                    <!-- Удалена кнопка "Создать опрос" -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             @User.Identity.Name
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выйти</a></li>
                         </ul>
                     </li>
@@ -58,6 +50,7 @@
                     }
                 </ul>
             </div>
+            }
         </div>
     </nav>
 </header>

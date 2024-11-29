@@ -17,5 +17,7 @@ public class Survey
     public string Questions { get; set; }
 
     public string CorrectAnswers { get; set; }
+    public ICollection<SurveyResponse> SurveyResponses { get; set; }
+
 
 }

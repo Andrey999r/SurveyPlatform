@@ -8,7 +8,8 @@ using SurveyPlatform.Models;
         // DbSet
         public DbSet<User> Users { get; set; }
         public DbSet<Survey> Surveys { get; set; }
-       
+        public DbSet<SurveyResponse> SurveyResponses { get; set; }
+
     }
 
 

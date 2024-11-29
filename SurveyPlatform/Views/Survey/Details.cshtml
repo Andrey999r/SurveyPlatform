@@ -1,20 +1,35 @@
-﻿<h2>Детали опроса</h2>
+﻿<h2>Ответы участников:</h2>
 
-<table class="table">
+<table class="table table-bordered table-striped">
     <thead>
     <tr>
-        <th>Вопрос</th>
-        <th>Правильный ответ</th>
+        <th>Имя участника</th>
+        <th>Ответы</th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var detail in ViewBag.SurveyDetails)
+    @foreach (var response in Model.Responses)
     {
         <tr>
-            <td>@detail.Question</td>
-            <td>@detail.CorrectAnswer</td>
+            <td>@response.RespondentName</td>
+            <td>
+                <ul>
+                    @for (int i = 0; i < Model.Questions.Length; i++)
+                    {
+                        var userAnswer = response.Answers.Length > i 
+                            ? response.Answers[i] 
+                            : "Нет ответа";
+
+                        <li>
+                            <strong>Вопрос:</strong> @Model.Questions[i]<br />
+                            <strong>Ответ:</strong> @userAnswer
+                        </li>
+                    }
+                </ul>
+            </td>
         </tr>
     }
     </tbody>
 </table>
-<a asp-action="Index" class="btn btn-primary">Назад к списку опросов</a>
+
+<a asp-action="Index" class="btn btn-primary">Назад</a>

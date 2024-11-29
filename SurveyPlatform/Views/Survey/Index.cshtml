@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<SurveyPlatform.Models.Survey>
 
 @{
-    ViewData["Title"] = "Список опросов";
+ViewData["Title"] = "Список опросов";
 }
 
 <h2>Список опросов</h2>
+
 <a asp-action="Create" class="btn btn-primary mb-3">Создать новый опрос</a>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
     <tr>
         <th>Название</th>
@@ -18,16 +19,39 @@
     <tbody>
     @foreach (var survey in Model)
     {
-        <tr>
-            <td>@survey.Title</td>
-            <td>@survey.Description</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@survey.Id" class="btn btn-info btn-sm">Детали</a>
-                <form asp-action="Delete" asp-route-id="@survey.Id" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-                </form>
-            </td>
-        </tr>
+    <tr>
+        <td>@survey.Title</td>
+        <td>@survey.Description</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@survey.Id" class="btn btn-info btn-sm">Детали</a>
+            <a asp-action="Delete" asp-route-id="@survey.Id" class="btn btn-danger btn-sm">Удалить</a>
+            <button class="btn btn-secondary btn-sm copy-link-btn"
+                    data-link="@Url.Action("Take", "Survey", new { id = survey.Id }, Context.Request.Scheme)">
+                Скопировать ссылку
+            </button>
+        </td>
+    </tr>
     }
     </tbody>
 </table>
+
+@section Scripts {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const copyButtons = document.querySelectorAll('.copy-link-btn');
+
+        copyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const link = button.getAttribute('data-link');
+                navigator.clipboard.writeText(link)
+                    .then(() => {
+                        alert('Ссылка скопирована: ' + link);
+                    })
+                    .catch(err => {
+                        console.error('Ошибка при копировании ссылки: ', err);
+                    });
+            });
+        });
+    });
+</script>
+}
