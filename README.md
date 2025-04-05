@@ -23,7 +23,7 @@
 Склонируйте проект из публичного репозитория **GitHub** на свой компьютер, используя следующую команду:
 
 ```sh
-git clone https://github.com/Andrey999r/CrudNetCore.git
+git clone https://github.com/Andrey999r/SurveyPlatform.git
 
 ```
 
