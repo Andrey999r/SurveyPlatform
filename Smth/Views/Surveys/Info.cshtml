@@ -1,26 +1,30 @@
 @model Smth.ViewModel.ParticipantViewModel
 @{
+    // Устанавливаем заголовок страницы через ViewData
     ViewData["Title"] = "Информация об участнике";
 }
 
+<!-- Определяем стили для страницы "Информация об участнике" -->
 <style>
-    /* Основные переменные */
+    /* Основные переменные для оформления */
     :root {
-        --primary: #00BFA5;
-        --secondary: #009688;
-        --background: #1d1d1d;
-        --card-bg: #2c2c2c;
-        --text: #ffffff;
-        --text-light: #BDBDBD;
-        --border-color: rgba(255, 255, 255, 0.1);
+        --primary: #00BFA5;         /* Основной цвет */
+        --secondary: #009688;       /* Вторичный цвет */
+        --background: #1d1d1d;       /* Фоновый цвет страницы */
+        --card-bg: #2c2c2c;         /* Цвет фона карточек */
+        --text: #ffffff;            /* Основной цвет текста */
+        --text-light: #BDBDBD;      /* Светлый оттенок для текста */
+        --border-color: rgba(255, 255, 255, 0.1); /* Цвет границ элементов */
     }
 
+    /* Стили для body: задаются фон, цвет текста и шрифт */
     body {
         background: var(--background);
         color: var(--text);
         font-family: 'Segoe UI', sans-serif;
     }
 
+    /* Стили заголовков h2 и h3 с анимацией появления */
     h2,
     h3 {
         color: var(--primary);
@@ -30,6 +34,7 @@
         animation: fadeIn 0.8s ease;
     }
 
+    /* Контейнер для всей информации об участнике */
     .info-container {
         max-width: 800px;
         margin: 0 auto;
@@ -37,6 +42,7 @@
         animation: cardEntrance 0.6s ease;
     }
 
+    /* Карточка, содержащая информацию об участнике */
     .participant-card {
         background: var(--card-bg);
         border-radius: 12px;
@@ -46,6 +52,7 @@
         border: 1px solid var(--border-color);
     }
 
+    /* Элемент с подробной информацией, например, имя участника */
     .detail-item {
         margin-bottom: 1.5rem;
         padding: 1rem;
@@ -53,6 +60,7 @@
         border-radius: 8px;
     }
 
+    /* Форма для обновления email участника */
     .email-form {
         display: flex;
         gap: 1rem;
@@ -60,6 +68,7 @@
         margin: 2rem 0;
     }
 
+    /* Стили для поля ввода email */
     input[type="email"] {
         flex-grow: 1;
         padding: 0.8rem 1.2rem;
@@ -70,11 +79,13 @@
         transition: all 0.3s ease;
     }
 
+    /* Стили для поля ввода email при фокусе */
     input[type="email"]:focus {
         border-color: var(--primary);
         box-shadow: 0 0 15px rgba(0, 191, 165, 0.2);
     }
 
+    /* Стили для кнопок */
     button {
         padding: 0.8rem 1.5rem;
         background: var(--primary);
@@ -86,12 +97,14 @@
         font-weight: 500;
     }
 
+    /* Стили для кнопок при наведении */
     button:hover {
         background: var(--secondary);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
     }
 
+    /* Таблица для отображения ответов участника */
     .answers-table {
         width: 100%;
         border-collapse: collapse;
@@ -102,6 +115,7 @@
         animation: fadeIn 0.6s ease;
     }
 
+    /* Стили для ячеек таблицы (заголовки и данные) */
     .answers-table th,
     .answers-table td {
         padding: 1.2rem;
@@ -109,6 +123,7 @@
         text-align: left;
     }
 
+    /* Стили заголовков таблицы */
     .answers-table th {
         background: rgba(0, 191, 165, 0.15);
         color: var(--primary);
@@ -116,6 +131,7 @@
         text-transform: uppercase;
     }
 
+    /* Анимация строк таблицы при наведении */
     .answers-table tr {
         transition: all 0.3s ease;
     }
@@ -125,6 +141,7 @@
         transform: translateX(8px);
     }
 
+    /* Стили для сообщений (например, сообщение об отсутствии ответов) */
     .message {
         padding: 1rem;
         background: rgba(0, 191, 165, 0.1);
@@ -133,37 +150,36 @@
         animation: fadeIn 0.5s ease;
     }
 
+    /* Анимация появления карточки */
     @@keyframes cardEntrance {
         from {
             opacity: 0;
             transform: translateY(30px) scale(0.95);
         }
-
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
         }
     }
 
+    /* Анимация плавного появления */
     @@keyframes fadeIn {
         from {
             opacity: 0;
         }
-
         to {
             opacity: 1;
         }
     }
 
+    /* Адаптивные стили для устройств с маленьким экраном */
     @@media (max-width: 768px) {
         .info-container {
             padding: 1rem;
         }
-
         .email-form {
             flex-direction: column;
         }
-
         .answers-table {
             display: block;
             overflow-x: auto;
@@ -171,27 +187,38 @@
     }
 </style>
 
+<!-- Основной контейнер информации об участнике -->
 <div class="info-container">
+    <!-- Заголовок страницы, отображающий название -->
     <h2>@ViewData["Title"]</h2>
 
+    <!-- Карточка с информацией об участнике -->
     <div class="participant-card">
+        <!-- Элемент с именем участника -->
         <div class="detail-item">
             <strong>Имя:</strong> @Model.ParticipantName
         </div>
 
+        <!-- Форма для обновления email участника -->
         <form class="email-form" asp-action="UpdateEmail" method="post">
+            <!-- Скрытое поле для передачи идентификатора участника -->
             <input type="hidden" name="Id" value="@Model.Id" />
+            <!-- Поле для ввода email с текущим значением -->
             <input type="email" id="email" name="Email" value="@Model.Email" placeholder="Введите email" required />
+            <!-- Кнопка отправки формы для обновления email -->
             <button type="submit">Обновить Email</button>
         </form>
 
+        <!-- Вывод сообщения об успешном обновлении email, если оно имеется -->
         @if (TempData["Message"] != null)
         {
             <div class="message">@TempData["Message"]</div>
         }
     </div>
 
+    <!-- Заголовок секции с ответами участника -->
     <h3>Ответы на опросы</h3>
+    <!-- Если у участника есть ответы, отображаем таблицу с ответами -->
     @if (Model.Answers.Any())
     {
         <table class="answers-table">
@@ -214,6 +241,7 @@
     }
     else
     {
+        <!-- Если ответов нет, выводим сообщение об отсутствии данных -->
         <div class="message">Нет данных о пройденных опросах</div>
     }
 </div>

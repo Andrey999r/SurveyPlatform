@@ -1,18 +1,21 @@
+@* Устанавливаем заголовок страницы через ViewBag *@
 @{
     ViewBag.Title = "Спасибо за участие!";
 }
 
+<!-- Определение CSS стилей для страницы "Спасибо за участие" -->
 <style>
-    /* Основные переменные */
+    /* Основные переменные для цветов и оформления */
     :root {
-        --primary: #00BFA5;
-        --secondary: #009688;
-        --background: #1d1d1d;
-        --card-bg: #2c2c2c;
-        --text: #ffffff;
-        --text-light: #BDBDBD;
+        --primary: #00BFA5;      /* Основной зеленый цвет */
+        --secondary: #009688;    /* Вторичный зеленый цвет */
+        --background: #1d1d1d;   /* Цвет фона страницы */
+        --card-bg: #2c2c2c;      /* Цвет фона карточек */
+        --text: #ffffff;         /* Основной цвет текста */
+        --text-light: #BDBDBD;   /* Светлый оттенок текста */
     }
 
+    /* Контейнер для блока "Спасибо за участие" */
     .thank-you-container {
         max-width: 600px;
         margin: 4rem auto;
@@ -24,6 +27,7 @@
         animation: cardEntrance 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
 
+    /* Заголовок внутри контейнера */
     .thank-you-container h2 {
         color: var(--primary);
         font-size: 2rem;
@@ -31,12 +35,14 @@
         font-weight: 600;
     }
 
+    /* Описание внутри контейнера */
     .thank-you-container p {
         color: var(--text-light);
         font-size: 1.1rem;
         margin-bottom: 2rem;
     }
 
+    /* Стили для кнопки "На главную" */
     .btn-primary {
         display: inline-flex;
         align-items: center;
@@ -52,44 +58,49 @@
         box-shadow: 0 4px 12px rgba(0, 191, 165, 0.2);
     }
 
+    /* Эффект наведения для кнопки */
     .btn-primary:hover {
         background: var(--secondary);
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(0, 191, 165, 0.3);
     }
 
+    /* Анимация появления карточки */
     @@keyframes cardEntrance {
         from {
             opacity: 0;
             transform: translateY(30px) scale(0.95);
         }
-
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
         }
     }
 
+    /* Адаптивные стили для устройств с узким экраном */
     @@media (max-width: 768px) {
         .thank-you-container {
             margin: 2rem 1rem;
             padding: 2rem;
         }
-
         .thank-you-container h2 {
             font-size: 1.5rem;
         }
     }
 </style>
 
+<!-- Основной контейнер для отображения сообщения "Спасибо за участие" -->
 <div class="thank-you-container">
+    <!-- Заголовок с именем участника, переданным через ViewBag -->
     <h2>Спасибо за участие, @ViewBag.ParticipantName!</h2>
+    <!-- Сообщение об успешном сохранении ответов -->
     <p>Ваши ответы успешно сохранены</p>
 
+    <!-- Кнопка для перехода на главную страницу -->
     <a href="@Url.Action("Index", "Home")" class="btn-primary">
         <i class="fas fa-home"></i> На главную
     </a>
 </div>
 
-<!-- Подключение иконок -->
+<!-- Подключение библиотеки иконок Font Awesome для отображения иконок -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

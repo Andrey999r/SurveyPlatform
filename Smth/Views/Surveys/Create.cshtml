@@ -13,6 +13,7 @@
             box-sizing: border-box;
         }
 
+        /* Определяем основные цвета через CSS-переменные */
         :root {
             --primary: #00BFA5;
             --secondary: #009688;
@@ -22,6 +23,7 @@
             --text-light: #BDBDBD;
         }
 
+        /* Стили для body: фон, цвет текста, шрифт и отступы */
         body {
             background: var(--background);
             color: var(--text);
@@ -30,6 +32,7 @@
             padding: 0;
         }
 
+        /* Стили заголовков h2 и h3 с анимацией появления */
         h2,
         h3 {
             color: var(--primary);
@@ -39,6 +42,7 @@
             animation: fadeIn 0.6s ease-out;
         }
 
+        /* Стили основного контейнера формы создания опроса */
         .create-survey-form {
             max-width: 700px;
             margin: 2rem auto;
@@ -49,6 +53,7 @@
             animation: fadeIn 0.6s ease-out;
         }
 
+        /* Стили для каждого ряда формы: отступы и расположение по вертикали */
         .form-row {
             margin-bottom: 2rem;
             display: flex;
@@ -56,6 +61,7 @@
             gap: 1rem;
         }
 
+        /* Стили для полей ввода и текстовых областей */
         .survey-input,
         .survey-textarea,
         .question-input {
@@ -69,6 +75,7 @@
             transition: border-color 0.3s ease;
         }
 
+        /* Стили при фокусе для выделения активного поля */
         .survey-input:focus,
         .survey-textarea:focus,
         .question-input:focus {
@@ -76,11 +83,13 @@
             border-color: var(--primary);
         }
 
+        /* Дополнительные стили для текстовой области: минимальная высота и возможность изменения размера */
         .survey-textarea {
             min-height: 100px;
             resize: vertical;
         }
 
+        /* Стили для ряда вопроса с выравниванием элементов */
         .question-row {
             display: flex;
             gap: 1rem;
@@ -89,6 +98,7 @@
             animation: fadeIn 0.4s ease-out;
         }
 
+        /* Стили кнопки удаления вопроса */
         .remove-question-btn {
             background: transparent;
             color: #ff6666;
@@ -102,6 +112,7 @@
             transform: scale(1.2);
         }
 
+        /* Стили кнопки добавления нового вопроса */
         .add-question-btn {
             background: var(--primary);
             color: var(--text);
@@ -118,6 +129,7 @@
             box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
         }
 
+        /* Стили для кнопки отправки формы создания опроса */
         .create-button {
             margin-top: 1.5rem;
             width: 100%;
@@ -138,7 +150,6 @@
         }
 
         /* Анимация появления элементов */
-
         @@keyframes fadeIn {
             from {
                 opacity: 0;
@@ -151,6 +162,7 @@
             }
         }
 
+        /* Медиа-запрос для устройств с маленьким экраном */
         @@media (max-width: 768px) {
             .create-survey-form {
                 padding: 1.5rem;
@@ -160,40 +172,43 @@
 </head>
 
 <body>
+    <!-- Заголовок страницы -->
     <h2>Создать опрос</h2>
-    <!-- Основной контейнер формы создания опроса -->
-
+    <!-- Форма для создания опроса -->
     <form method="post" class="create-survey-form">
-        <!-- Название опроса -->
+        <!-- Ряд для ввода названия опроса -->
         <div class="form-row">
             <input type="text" name="name" placeholder="Название опроса" class="survey-input" required />
         </div>
 
-        <!-- Описание -->
+        <!-- Ряд для ввода описания опроса -->
         <div class="form-row">
             <textarea name="description" placeholder="Описание" class="survey-textarea" required></textarea>
         </div>
 
-        <!-- Заголовок для вопросов -->
+        <!-- Заголовок для раздела вопросов -->
         <h3>Вопросы:</h3>
 
-        <!-- Контейнер для вопросов -->
+        <!-- Контейнер для динамически добавляемых вопросов -->
         <div id="questions-container">
+            <!-- Первый вопрос с кнопкой удаления -->
             <div class="question-row">
                 <input type="text" name="questions" placeholder="Вопрос 1" class="question-input" required />
                 <button type="button" class="remove-question-btn" onclick="removeQuestion(this)">✕</button>
             </div>
+            <!-- Второй вопрос -->
             <div class="question-row">
                 <input type="text" name="questions" placeholder="Вопрос 2" class="question-input" required />
                 <button type="button" class="remove-question-btn" onclick="removeQuestion(this)">✕</button>
             </div>
+            <!-- Третий вопрос -->
             <div class="question-row">
                 <input type="text" name="questions" placeholder="Вопрос 3" class="question-input" required />
                 <button type="button" class="remove-question-btn" onclick="removeQuestion(this)">✕</button>
             </div>
         </div>
 
-        <!-- Кнопки действий -->
+        <!-- Блок для кнопок действий: добавление нового вопроса и отправка формы -->
         <div class="actions">
             <button type="button" class="add-question-btn" onclick="addQuestion()">+ Добавить вопрос</button>
             <input type="submit" value="Создать" class="create-button" />
@@ -202,25 +217,31 @@
 
     @section Scripts {
         <script>
-            // Динамическое добавление новых вопросов в опрос
-
+            // Функция для добавления нового вопроса
             function addQuestion() {
+                // Находим контейнер вопросов
                 const container = document.getElementById("questions-container");
+                // Определяем текущий номер нового вопроса
                 const count = container.querySelectorAll('.question-row').length + 1;
-                // Создание HTML-элемента для нового вопроса
-
+                // Создаем новый div для вопроса
                 const row = document.createElement('div');
                 row.className = 'question-row';
+                // Заполняем HTML новой строки вопроса с динамическим плейсхолдером
                 row.innerHTML = `
                         <input type="text" name="questions" placeholder="Вопрос ${count}" class="question-input" required />
                         <button type="button" class="remove-question-btn" onclick="removeQuestion(this)">✕</button>`;
+                // Добавляем новую строку в контейнер
                 container.appendChild(row);
             }
 
+            // Функция для удаления вопроса
             function removeQuestion(btn) {
+                // Находим родительский элемент кнопки (ряд вопроса)
                 const row = btn.parentNode;
                 const container = document.getElementById("questions-container");
+                // Удаляем ряд из контейнера
                 container.removeChild(row);
+                // Обновляем плейсхолдеры оставшихся вопросов с новым порядковым номером
                 const rows = container.querySelectorAll('.question-row');
                 rows.forEach((r, i) => {
                     r.querySelector('.question-input').placeholder = 'Вопрос ' + (i + 1);

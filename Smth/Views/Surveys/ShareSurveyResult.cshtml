@@ -1,35 +1,38 @@
+@* Устанавливаем заголовок страницы через ViewBag *@
 @{
     ViewBag.Title = "Результат отправки приглашения";
 }
 
+<!-- Определение CSS стилей для страницы -->
 <style>
-    /* Основные переменные */
+    /* Основные переменные для цветов и стилей */
     :root {
-        --primary: #00BFA5;
-        --secondary: #009688;
-        --background: #1d1d1d;
-        --card-bg: #2c2c2c;
-        --text: #ffffff;
-        --text-light: #BDBDBD;
+        --primary: #00BFA5;          /* Основной зеленый цвет */
+        --secondary: #009688;        /* Вторичный зеленый цвет */
+        --background: #1d1d1d;       /* Цвет фона страницы */
+        --card-bg: #2c2c2c;          /* Цвет фона карточек */
+        --text: #ffffff;             /* Основной цвет текста */
+        --text-light: #BDBDBD;       /* Светлый цвет для вспомогательного текста */
     }
 
+    /* Стили для тега body: задаем фон, убираем отступы и скрываем горизонтальную прокрутку */
     body {
         background: var(--background);
         margin: 0;
         overflow-x: hidden;
     }
 
-    /* Контейнер результата */
+    /* Контейнер, который располагает блок результата по центру */
     .result-container {
         position: relative;
         min-height: 100vh;
         display: flex;
-        align-items: flex-start;
-        /* Изменено на выравнивание сверху */
+        align-items: flex-start; /* Выравнивание блока по верху */
         justify-content: center;
         padding: 2rem;
     }
 
+    /* Основной блок с результатом отправки приглашения */
     .result-box {
         background: var(--card-bg);
         border-radius: 20px;
@@ -42,14 +45,15 @@
         animation: scaleUp 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
 
+    /* Классы для успешного и ошибочного результата с различной рамкой */
     .success-bg {
         border: 3px solid var(--primary);
     }
-
     .error-bg {
         border: 3px solid #dc3545;
     }
 
+    /* Стили для заголовка результата */
     .result-title {
         font-size: 2.5rem;
         color: var(--primary);
@@ -57,6 +61,7 @@
         text-align: center;
     }
 
+    /* Стили для текстового сообщения результата */
     .result-message {
         font-size: 1.2rem;
         line-height: 1.6;
@@ -65,6 +70,7 @@
         margin-bottom: 3rem;
     }
 
+    /* Стили для кнопки "На главную" */
     .btn-home {
         background: var(--primary);
         color: var(--text);
@@ -76,14 +82,13 @@
         align-items: center;
         gap: 0.8rem;
     }
-
     .btn-home:hover {
         background: var(--secondary);
         transform: translateY(-3px);
         box-shadow: 0 8px 16px rgba(0, 191, 165, 0.3);
     }
 
-    /* Анимации конфетти */
+    /* Стили для конфетти: маленькие квадратики, которые анимируются */
     .confetti {
         position: fixed;
         width: 12px;
@@ -93,47 +98,50 @@
         animation: confetti-fall 4s linear forwards;
     }
 
+    /* Анимация падения конфетти */
     @@keyframes confetti-fall {
         0% {
             transform: translateY(-100vh) rotate(0deg) scale(1);
             opacity: 1;
         }
-
         100% {
             transform: translateY(100vh) rotate(720deg) scale(0);
             opacity: 0;
         }
     }
 
+    /* Анимация появления блока результата */
     @@keyframes scaleUp {
         from {
             transform: scale(0.8);
             opacity: 0;
         }
-
         to {
             transform: scale(1);
             opacity: 1;
         }
     }
 
+    /* Адаптивные стили для устройств с узким экраном */
     @@media (max-width: 768px) {
         .result-box {
             padding: 2rem 1.5rem;
         }
-
         .result-title {
             font-size: 2rem;
         }
     }
 </style>
 
+<!-- Основной HTML-контейнер для результата отправки приглашения -->
 <div class="result-container">
+    @* Если отправка приглашения прошла успешно, выводим конфетти *@
     @if (ViewBag.IsSuccess)
     {
-        <!-- Обновленные конфетти со случайным распределением -->
+        @* Генерируем 30 случайных элементов конфетти *@
         @for (int i = 0; i < 30; i++)
         {
+            // Создаем новый экземпляр Random для генерации случайных параметров
             var rnd = new Random();
             <div class="confetti" style="
                         left: @(rnd.Next(0, 100))%;
@@ -141,7 +149,7 @@
                         animation: 
                             confetti-fall 
                             @(rnd.Next(3, 6))s 
-                            cubic-bezier(@rnd.NextDouble(),@rnd.NextDouble(),@rnd.NextDouble(),@rnd.NextDouble()) 
+                            cubic-bezier(@rnd.NextDouble(), @rnd.NextDouble(), @rnd.NextDouble(), @rnd.NextDouble()) 
                             @(rnd.NextDouble())s 
                             infinite;
                         background: hsl(@(rnd.Next(0, 360)), 70%, 50%);
@@ -150,10 +158,14 @@
                     "></div>
         }
     }
+    @* Основной блок результата с динамическим классом, зависящим от успешности *@
     <div class="result-box @(ViewBag.IsSuccess ? "success-bg" : "error-bg")">
+        <!-- Заголовок результата с эмодзи успеха или ошибки -->
         <h2 class="result-title">@(ViewBag.IsSuccess ? "🎉 Успех!" : "❌ Ошибка!")</h2>
+        <!-- Сообщение результата, переданное через ViewBag -->
         <p class="result-message">@ViewBag.Message</p>
 
+        <!-- Кнопка для перехода на главную страницу -->
         <div class="text-center">
             <a href="@Url.Action("Index", "Home")" class="btn-home">
                 <i class="fas fa-home"></i> На главную
@@ -162,5 +174,5 @@
     </div>
 </div>
 
-<!-- Подключение иконок -->
+<!-- Подключение библиотеки иконок Font Awesome для использования иконок -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

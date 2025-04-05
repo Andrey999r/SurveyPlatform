@@ -1,20 +1,24 @@
+@* Модель передается динамически *@
 @model dynamic
 @{
+    // Устанавливаем заголовок страницы через ViewBag, используя имя опроса
     ViewBag.Title = Model.Name;
 }
 
+<!-- Определение стилей для страницы опроса -->
 <style>
-    /* Основные переменные */
+    /* Основные переменные для цветов и оформления */
     :root {
-        --primary: #00BFA5;
-        --secondary: #009688;
-        --background: #1d1d1d;
-        --card-bg: #2c2c2c;
-        --text: #ffffff;
-        --text-light: #BDBDBD;
-        --border-color: rgba(255, 255, 255, 0.1);
+        --primary: #00BFA5;          /* Основной зеленый цвет */
+        --secondary: #009688;        /* Вторичный зеленый цвет */
+        --background: #1d1d1d;       /* Фон страницы */
+        --card-bg: #2c2c2c;          /* Фон карточек */
+        --text: #ffffff;             /* Основной цвет текста */
+        --text-light: #BDBDBD;       /* Светлый оттенок текста */
+        --border-color: rgba(255, 255, 255, 0.1); /* Цвет границ */
     }
 
+    /* Контейнер для опроса с центральным выравниванием и тенями */
     .survey-container {
         max-width: 800px;
         margin: 2rem auto;
@@ -25,17 +29,18 @@
         animation: cardEntrance 0.6s ease;
     }
 
+    /* Заголовок страницы с названием опроса */
     .page-title {
         color: var(--primary);
         text-align: center;
         margin-bottom: 2rem;
         font-weight: 600;
         animation: fadeIn 0.8s ease;
-        border-bottom: none !important;
-        /* Убрана граница */
+        border-bottom: none !important; /* Граница отключена */
         padding-bottom: 0 !important;
     }
 
+    /* Описание опроса */
     .survey-description {
         color: var(--text-light);
         font-size: 1.1rem;
@@ -44,12 +49,14 @@
         text-align: center;
     }
 
+    /* Форма опроса: элементы располагаются в колонку с отступами */
     .survey-form {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
     }
 
+    /* Стиль для всех полей ввода в форме */
     .survey-input {
         width: 100%;
         padding: 1rem;
@@ -61,12 +68,14 @@
         transition: all 0.3s ease;
     }
 
+    /* Стилизация поля ввода при получении фокуса */
     .survey-input:focus {
         border-color: var(--primary);
         box-shadow: 0 0 15px rgba(0, 191, 165, 0.2);
         outline: none;
     }
 
+    /* Блок для каждого вопроса опроса */
     .question-block {
         padding: 1.5rem;
         background: rgba(0, 0, 0, 0.1);
@@ -74,12 +83,14 @@
         animation: fadeIn 0.5s ease;
     }
 
+    /* Текст вопроса */
     .question-text {
         color: var(--primary);
         font-weight: 500;
         margin-bottom: 1rem;
     }
 
+    /* Кнопка отправки формы */
     .survey-submit {
         padding: 1rem 2rem;
         background: var(--primary);
@@ -92,66 +103,77 @@
         align-self: center;
     }
 
+    /* Эффект наведения для кнопки отправки */
     .survey-submit:hover {
         background: var(--secondary);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
     }
 
+    /* Анимация появления карточки */
     @@keyframes cardEntrance {
         from {
             opacity: 0;
             transform: translateY(30px) scale(0.95);
         }
-
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
         }
     }
 
+    /* Анимация плавного появления элементов */
     @@keyframes fadeIn {
         from {
             opacity: 0;
             transform: translateY(10px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
 
+    /* Адаптивные стили для мобильных устройств */
     @@media (max-width: 768px) {
         .survey-container {
             margin: 1rem;
             padding: 1.5rem;
         }
-
         .survey-input {
             padding: 0.8rem;
         }
     }
 </style>
 
+<!-- Заголовок страницы с названием опроса -->
 <h2 class="page-title">@Model.Name</h2>
 
+<!-- Основной контейнер опроса -->
 <div class="survey-container">
+    <!-- Описание опроса -->
     <p class="survey-description">@Model.Description</p>
 
+    <!-- Форма для ввода данных участника и ответов -->
     <form method="post" class="survey-form">
+        <!-- Поле для ввода имени участника -->
         <input type="text" name="participantName" placeholder="Ваше имя" class="survey-input" required />
 
+        <!-- Поле для ввода email участника -->
         <input type="email" name="participantEmail" placeholder="Ваш email" class="survey-input" required />
 
+        @* Перебираем вопросы из модели и генерируем блок для каждого вопроса *@
         @foreach (var q in Model.Questions)
         {
             <div class="question-block">
+                <!-- Текст вопроса -->
                 <p class="question-text">@q.Text</p>
+                <!-- Поле для ввода ответа -->
                 <input type="text" name="answers" class="survey-input" required />
             </div>
         }
 
+        <!-- Кнопка отправки формы -->
         <input type="submit" value="Отправить ответы" class="survey-submit" />
     </form>
 </div>

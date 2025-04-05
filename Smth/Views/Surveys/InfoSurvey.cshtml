@@ -1,26 +1,32 @@
+@* Модель представления участника опроса *@
 @model Smth.ViewModel.ParticipantViewModel
+
 @{
+    // Устанавливаем заголовок страницы
     ViewBag.Title = "Детали пройденного опроса";
 }
 
+<!-- Определение стилей для страницы -->
 <style>
-    /* Основные переменные */
+    /* Основные переменные для темы */
     :root {
-        --primary: #00BFA5;
-        --secondary: #009688;
-        --background: #1d1d1d;
-        --card-bg: #2c2c2c;
-        --text: #ffffff;
-        --text-light: #BDBDBD;
-        --border-color: rgba(255, 255, 255, 0.1);
+        --primary: #00BFA5;          /* Основной цвет */
+        --secondary: #009688;        /* Вторичный цвет */
+        --background: #1d1d1d;       /* Цвет фона страницы */
+        --card-bg: #2c2c2c;          /* Цвет фона карточек */
+        --text: #ffffff;             /* Основной цвет текста */
+        --text-light: #BDBDBD;       /* Светлый цвет текста */
+        --border-color: rgba(255, 255, 255, 0.1); /* Цвет рамок */
     }
 
+    /* Стили для тега body */
     body {
         background: var(--background);
         color: var(--text);
         font-family: 'Segoe UI', sans-serif;
     }
 
+    /* Стили для заголовков h2 и h3 */
     h2,
     h3 {
         color: var(--primary);
@@ -29,6 +35,7 @@
         animation: fadeIn 0.8s ease;
     }
 
+    /* Стили для контейнера с информацией об участнике */
     .participant-info {
         background: var(--card-bg);
         border-radius: 12px;
@@ -38,11 +45,13 @@
         animation: cardEntrance 0.6s ease;
     }
 
+    /* Стили для параграфов в блоке participant-info */
     .participant-info p {
         margin: 1rem 0;
         font-size: 1.1rem;
     }
 
+    /* Стили для таблицы с ответами */
     .surveys-table {
         width: 100%;
         border-collapse: collapse;
@@ -53,6 +62,7 @@
         animation: fadeIn 0.6s ease;
     }
 
+    /* Стили для ячеек таблицы */
     .surveys-table th,
     .surveys-table td {
         padding: 1.2rem;
@@ -60,6 +70,7 @@
         text-align: left;
     }
 
+    /* Стили для заголовков столбцов таблицы */
     .surveys-table th {
         background: rgba(0, 191, 165, 0.15);
         color: var(--primary);
@@ -67,6 +78,7 @@
         text-transform: uppercase;
     }
 
+    /* Анимация при наведении на строку таблицы */
     .surveys-table tr {
         transition: all 0.3s ease;
     }
@@ -76,6 +88,7 @@
         transform: translateX(8px);
     }
 
+    /* Стили для ссылки "Назад к списку" */
     .create-survey-link {
         display: inline-flex;
         align-items: center;
@@ -97,12 +110,12 @@
         box-shadow: 0 6px 20px rgba(0, 191, 165, 0.3);
     }
 
+    /* Ключевые кадры анимации для появления элементов */
     @@keyframes fadeIn {
         from {
             opacity: 0;
             transform: translateY(20px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
@@ -114,55 +127,67 @@
             opacity: 0;
             transform: translateY(30px) scale(0.95);
         }
-
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
         }
     }
 
+    /* Адаптивные стили для устройств с узким экраном */
     @@media (max-width: 768px) {
         .surveys-table {
             display: block;
             overflow-x: auto;
         }
-
         .participant-info {
             padding: 1.5rem;
         }
     }
 </style>
 
+<!-- Основной контейнер страницы -->
 <div class="main-container">
+    <!-- Заголовок опроса с выводом имени опроса из модели -->
     <h2>Опрос: @Model.SurveyName</h2>
 
+    <!-- Карточка с информацией об участнике -->
     <div class="participant-info">
+        <!-- Вывод имени участника -->
         <p><strong>Имя участника:</strong> @Model.ParticipantName</p>
+        <!-- Вывод email участника -->
         <p><strong>Email:</strong> @Model.Email</p>
     </div>
 
+    <!-- Заголовок секции с ответами -->
     <h3>Ответы:</h3>
 
+    @* Проверка наличия ответов в модели *@
     @if (!Model.Answers.Any())
     {
+        <!-- Если ответов нет, выводим сообщение -->
         <div class="empty-message">
             <p>Ответов не найдено</p>
         </div>
     }
     else
     {
+        <!-- Если ответы есть, строим таблицу -->
         <table class="surveys-table">
             <thead>
                 <tr>
+                    <!-- Заголовки столбцов таблицы -->
                     <th>Вопрос</th>
                     <th>Ответ</th>
                 </tr>
             </thead>
             <tbody>
+                @* Перебор ответов из модели *@
                 @foreach (var answer in Model.Answers)
                 {
                     <tr>
+                        <!-- Вывод текста вопроса -->
                         <td><strong>@answer.Text</strong></td>
+                        <!-- Вывод текста ответа -->
                         <td>@answer.ResponseText</td>
                     </tr>
                 }
@@ -170,10 +195,11 @@
         </table>
     }
 
+    <!-- Ссылка для возврата к списку завершённых опросов -->
     <a href="@Url.Action("Completed", "Surveys")" class="create-survey-link">
         <i class="fas fa-arrow-left"></i> Назад к списку
     </a>
 </div>
 
-<!-- Подключение иконок -->
+<!-- Подключение библиотеки иконок Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

@@ -1,19 +1,22 @@
+@* Устанавливаем заголовок страницы *@
 @{
     ViewBag.Title = "Поделиться опросом";
 }
 
+<!-- Определение стилей для страницы -->
 <style>
-    /* Основные переменные */
+    /* Основные переменные для цветов и стилей */
     :root {
-        --primary: #00BFA5;
-        --secondary: #009688;
-        --background: #1d1d1d;
-        --card-bg: #2c2c2c;
-        --text: #ffffff;
-        --text-light: #BDBDBD;
-        --border-color: rgba(255, 255, 255, 0.1);
+        --primary: #00BFA5;          /* Основной цвет (зеленый) */
+        --secondary: #009688;        /* Вторичный цвет */
+        --background: #1d1d1d;       /* Цвет фона страницы */
+        --card-bg: #2c2c2c;          /* Цвет фона карточек */
+        --text: #ffffff;             /* Основной цвет текста */
+        --text-light: #BDBDBD;       /* Светлый цвет текста */
+        --border-color: rgba(255, 255, 255, 0.1); /* Цвет границ */
     }
 
+    /* Контейнер для блока "Поделиться опросом" */
     .share-container {
         max-width: 600px;
         margin: 2rem auto;
@@ -24,6 +27,7 @@
         animation: cardEntrance 0.6s ease;
     }
 
+    /* Заголовок блока */
     h2 {
         color: var(--primary);
         text-align: center;
@@ -31,12 +35,14 @@
         font-weight: 600;
     }
 
+    /* Группа ввода для поля с ссылкой и кнопки копирования */
     .input-group {
         display: flex;
         gap: 1rem;
         margin-bottom: 2rem;
     }
 
+    /* Стиль для текстового поля ввода */
     .input-field {
         flex: 1;
         padding: 0.8rem 1.2rem;
@@ -47,11 +53,13 @@
         transition: all 0.3s ease;
     }
 
+    /* Стиль поля при фокусе */
     .input-field:focus {
         border-color: var(--primary);
         box-shadow: 0 0 15px rgba(0, 191, 165, 0.2);
     }
 
+    /* Стиль для кнопки копирования */
     .copy-btn,
     .send-btn {
         padding: 0.8rem 1.5rem;
@@ -62,48 +70,51 @@
         transition: all 0.3s ease;
     }
 
+    /* Оформление кнопки копирования */
     .copy-btn {
         background: var(--primary);
         color: #111;
     }
 
+    /* Оформление кнопки отправки приглашения */
     .send-btn {
         background: var(--secondary);
         color: #111;
         width: 100%;
         margin-top: 1rem;
-
     }
 
+    /* Эффекты при наведении на кнопки */
     .copy-btn:hover,
     .send-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
     }
 
+    /* Стиль для меток (label) */
     .label {
         display: block;
         margin-bottom: 0.5rem;
         color: var(--text-light);
     }
 
+    /* Анимация появления карточки */
     @@keyframes cardEntrance {
         from {
             opacity: 0;
             transform: translateY(30px) scale(0.95);
         }
-
         to {
             opacity: 1;
             transform: translateY(0) scale(1);
         }
     }
 
+    /* Адаптивные стили для устройств с узким экраном */
     @@media (max-width: 768px) {
         .input-group {
             flex-direction: column;
         }
-
         .input-field,
         .copy-btn {
             width: 100%;
@@ -111,39 +122,50 @@
     }
 </style>
 
+<!-- Основной контейнер для блока "Поделиться опросом" -->
 <div class="share-container">
+    <!-- Заголовок блока -->
     <h2>Поделиться опросом</h2>
+    <!-- Информационное сообщение -->
     <p class="text-light">Скопируйте ссылку или отправьте приглашение на email</p>
 
+    <!-- Группа ввода: поле с ссылкой и кнопка копирования -->
     <div class="input-group">
+        <!-- Текстовое поле с ссылкой на опрос, значение передается через ViewBag -->
         <input id="surveyLink" type="text" class="input-field" value="@ViewBag.ShareLink" readonly>
+        <!-- Кнопка для копирования ссылки -->
         <button class="copy-btn" onclick="copyLink()">
             <i class="fas fa-copy"></i> Скопировать
         </button>
     </div>
 
-    <form method="post" action="@Url.Action("SendSurveyInvitation", "Surveys")"
-        onsubmit="return validateEmailDomain();">
+    <!-- Форма для отправки приглашения по email -->
+    <form method="post" action="@Url.Action("SendSurveyInvitation", "Surveys")" onsubmit="return validateEmailDomain();">
+        <!-- Передача идентификатора опроса скрытым полем -->
         <input type="hidden" name="surveyId" value="@ViewBag.SurveyId" />
+        <!-- Метка для поля email -->
         <label for="email" class="label">Email получателя:</label>
+        <!-- Поле ввода email -->
         <input type="email" class="input-field" name="recipientEmail" id="email" required>
+        <!-- Кнопка отправки формы -->
         <button type="submit" class="send-btn">
             <i class="fas fa-paper-plane"></i> Отправить приглашение
         </button>
     </form>
-
 </div>
 
+<!-- Скрипт для копирования ссылки в буфер обмена -->
 <script>
     function copyLink() {
+        // Получаем элемент с ссылкой
         const copyText = document.getElementById("surveyLink");
+        // Копируем текст из поля в буфер обмена
         navigator.clipboard.writeText(copyText.value).then(() => {
-            // Можно добавить красивый toast вместо alert
+            // Отображаем уведомление об успешном копировании (можно заменить на toast)
             alert("Ссылка скопирована: " + copyText.value);
         });
     }
-
 </script>
 
-<!-- Подключение иконок -->
+<!-- Подключение библиотеки иконок Font Awesome для использования иконок -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

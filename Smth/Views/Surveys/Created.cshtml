@@ -1,11 +1,13 @@
 @model List<Smth.Data.Survey>
 @{
+    // Устанавливаем активную вкладку и заголовок страницы для созданных опросов
     ViewBag.ActiveTab = "Created";
     ViewBag.Title = "Созданные опросы";
 }
 
+<!-- Определяем стили для страницы -->
 <style>
-    /* Основные переменные */
+    /* Основные переменные для оформления */
     :root {
         --primary: #00BFA5;
         --secondary: #009688;
@@ -15,12 +17,14 @@
         --border-color: rgba(255, 255, 255, 0.1);
     }
 
+    /* Стили для кнопки удаления при наведении */
     .action-link.delete-action:hover {
         background: #dc3545 !important;
         color: white !important;
         box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3) !important;
     }
 
+    /* Стили заголовка страницы */
     h2 {
         color: var(--primary);
         text-align: center;
@@ -29,6 +33,7 @@
         animation: fadeIn 0.8s ease;
     }
 
+    /* Стили ссылки для создания нового опроса */
     .create-survey-link {
         display: inline-flex;
         align-items: center;
@@ -49,6 +54,7 @@
         box-shadow: 0 6px 20px rgba(0, 191, 165, 0.3);
     }
 
+    /* Стили для таблицы опросов */
     .surveys-table {
         width: 100%;
         border-collapse: collapse;
@@ -59,12 +65,14 @@
         animation: cardEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
+    /* Стили для ячеек таблицы */
     .surveys-table th,
     .surveys-table td {
         padding: 1.2rem;
         border-bottom: 1px solid var(--border-color);
     }
 
+    /* Стили для заголовков столбцов таблицы */
     .surveys-table th {
         background: rgba(0, 191, 165, 0.15);
         color: var(--primary);
@@ -73,6 +81,7 @@
         letter-spacing: 0.8px;
     }
 
+    /* Анимация при наведении на строку таблицы */
     .surveys-table tr {
         transition: all 0.3s ease;
     }
@@ -82,6 +91,7 @@
         transform: translateX(8px);
     }
 
+    /* Стили для ссылок действий внутри таблицы */
     .action-link {
         display: inline-flex;
         align-items: center;
@@ -108,6 +118,7 @@
         box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
     }
 
+    /* Стили для сообщения об отсутствии опросов */
     .no-surveys {
         text-align: center;
         padding: 3rem;
@@ -116,7 +127,7 @@
         animation: fadeIn 0.5s ease;
     }
 
-    /* Анимации */
+    /* Анимация появления карточки */
     @@keyframes cardEntrance {
         from {
             opacity: 0;
@@ -129,6 +140,7 @@
         }
     }
 
+    /* Анимация плавного появления */
     @@keyframes fadeIn {
         from {
             opacity: 0;
@@ -139,6 +151,7 @@
         }
     }
 
+    /* Адаптивные стили для устройств с маленьким экраном */
     @@media (max-width: 768px) {
         .surveys-table {
             display: block;
@@ -152,22 +165,28 @@
     }
 </style>
 
+<!-- Заголовок страницы "Созданные опросы" -->
 <h2>Созданные опросы</h2>
+
+<!-- Контейнер для ссылки создания нового опроса -->
 <div class="create-survey-container">
     <a class="create-survey-link" href="/Surveys/Create">
         <i class="fas fa-plus"></i> Создать опрос
     </a>
 </div>
 
+<!-- Если список опросов пуст, выводим сообщение -->
 @if (!Model.Any())
 {
     <p class="no-surveys">Пока нет созданных опросов.</p>
 }
 else
 {
+    <!-- Если опросы имеются, отображаем их в виде таблицы -->
     <table class="surveys-table">
         <thead>
             <tr>
+                <!-- Заголовки столбцов: Название опроса и Действия -->
                 <th>Название</th>
                 <th>Действия</th>
             </tr>
@@ -176,14 +195,18 @@ else
             @foreach (var survey in Model)
             {
                 <tr>
+                    <!-- Вывод названия опроса -->
                     <td>@survey.Name</td>
                     <td>
+                        <!-- Ссылка для удаления опроса с иконкой -->
                         <a href="/Surveys/Delete/@survey.Id" class="action-link delete-action">
                             <i class="fas fa-trash"></i> Удалить
                         </a>
+                        <!-- Ссылка для получения ссылки для прохождения опроса -->
                         <a href="/Surveys/Share/@survey.Id" class="action-link">
                             <i class="fas fa-share"></i> Поделиться
                         </a>
+                        <!-- Ссылка для просмотра деталей опроса -->
                         <a href="/Surveys/Details/@survey.Id" class="action-link">
                             <i class="fas fa-info-circle"></i> Детали
                         </a>
@@ -194,5 +217,5 @@ else
     </table>
 }
 
-<!-- Подключение иконок -->
+<!-- Подключение библиотеки иконок Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

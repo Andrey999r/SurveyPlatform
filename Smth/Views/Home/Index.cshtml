@@ -3,17 +3,27 @@
     ViewBag.Title = "Мои опросы";
 }
 
+<!-- Стили для страницы -->
 <style>
+    /* CSS-переменные для цветовой схемы */
     :root {
         --primary: #00BFA5;
+        /* Основной акцентный цвет */
         --secondary: #009688;
+        /* Вторичный цвет */
         --background: #1d1d1d;
+        /* Фоновый цвет страницы */
         --card-bg: #2c2c2c;
+        /* Фон карточек опросов */
         --text: #ffffff;
+        /* Основной цвет текста */
         --text-light: #BDBDBD;
+        /* Второстепенный цвет текста */
         --border-color: rgba(255, 255, 255, 0.1);
+        /* Цвет границ */
     }
 
+    /* Стили для иконок в кнопках */
     .tab-button i,
     .btn i,
     .empty-state i {
@@ -21,11 +31,13 @@
         transition: transform 0.3s ease;
     }
 
+    /* Анимация иконок при наведении */
     .tab-button:hover i,
     .btn:hover i {
         transform: translateX(2px);
     }
 
+    /* Основной контейнер содержимого */
     .main-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -33,6 +45,7 @@
         animation: fadeIn 0.6s ease;
     }
 
+    /* Стиль заголовка страницы */
     .page-title {
         font-size: 2.5rem;
         color: var(--primary);
@@ -40,10 +53,9 @@
         margin-bottom: 2rem;
         font-weight: 700;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        border-bottom: none !important;
-        padding-bottom: 0 !important;
     }
 
+    /* Контейнер для вкладок */
     .tab-container {
         display: flex;
         justify-content: center;
@@ -51,6 +63,7 @@
         margin: 2rem 0;
     }
 
+    /* Стили кнопок-вкладок */
     .tab-button {
         padding: 1rem 2rem;
         border-radius: 8px;
@@ -64,17 +77,13 @@
         border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
+    /* Эффекты при наведении на вкладки */
     .tab-button:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        background: var(--primary);
     }
 
-    .tab-button.active {
-        background: var(--primary);
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
+    /* Сетка для отображения карточек опросов */
     .surveys-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -82,6 +91,7 @@
         margin-top: 2rem;
     }
 
+    /* Стиль карточки опроса */
     .survey-card {
         background: var(--card-bg);
         border-radius: 12px;
@@ -92,6 +102,7 @@
         overflow: hidden;
     }
 
+    /* Декоративная полоса вверху карточки */
     .survey-card::before {
         content: '';
         position: absolute;
@@ -102,11 +113,13 @@
         background: linear-gradient(90deg, var(--primary), var(--secondary));
     }
 
+    /* Анимация карточки при наведении */
     .survey-card:hover {
         transform: translateY(-5px) rotateZ(0.5deg);
         box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
     }
 
+    /* Стиль заголовка опроса */
     .survey-title {
         font-size: 1.3rem;
         color: var(--text);
@@ -114,21 +127,25 @@
         margin-bottom: 0.5rem;
     }
 
+    /* Стиль описания опроса */
     .survey-description {
         color: var(--text-light);
         line-height: 1.7;
         display: -webkit-box;
         -webkit-line-clamp: 3;
+        /* Ограничение в 3 строки */
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
+    /* Контейнер для кнопок действий */
     .survey-actions {
         display: flex;
         gap: 1rem;
         justify-content: flex-end;
     }
 
+    /* Базовый стиль кнопок */
     .btn {
         border-radius: 8px;
         padding: 0.8rem 1.5rem;
@@ -136,17 +153,13 @@
         transition: all 0.3s ease;
     }
 
+    /* Стиль основной кнопки */
     .btn-primary {
         background: var(--primary);
         color: white !important;
     }
 
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
-        background: var(--primary);
-    }
-
+    /* Состояние пустого списка */
     .empty-state {
         text-align: center;
         padding: 4rem;
@@ -155,6 +168,7 @@
         border-radius: 12px;
     }
 
+    /* Анимация появления */
     @@keyframes fadeIn {
         from {
             opacity: 0;
@@ -167,18 +181,7 @@
         }
     }
 
-    @@keyframes cardEntrance {
-        from {
-            opacity: 0;
-            transform: translateY(30px) scale(0.95);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-
+    /* Адаптивность для мобильных устройств */
     @@media (max-width: 768px) {
         .surveys-grid {
             grid-template-columns: 1fr;
@@ -194,9 +197,11 @@
     }
 </style>
 
+<!-- Основная разметка страницы -->
 <div class="main-container">
     <h1 class="page-title">Мои опросы</h1>
 
+    <!-- Вкладки для переключения между разделами -->
     <div class="tab-container">
         <a href="/Surveys/Created" class="tab-button @(ViewBag.ActiveTab == "Created" ? "active" : "")">
             <i class="fas fa-plus-circle"></i>Созданные
@@ -206,6 +211,7 @@
         </a>
     </div>
 
+    <!-- Сетка с карточками опросов -->
     <div class="surveys-grid">
         @foreach (var survey in Model)
         {
@@ -213,9 +219,7 @@
                 <div class="survey-header">
                     <h3 class="survey-title">@survey.Name</h3>
                 </div>
-
                 <p class="survey-description">@(survey.Description ?? "Описание отсутствует")</p>
-
                 <div class="survey-actions">
                     <a href="/Surveys/Details/@survey.Id" class="btn btn-primary">
                         <i class="fas fa-eye"></i> Подробнее
@@ -225,6 +229,7 @@
         }
     </div>
 
+    <!-- Блок для пустого состояния -->
     @if (!Model.Any())
     {
         <div class="empty-state">
@@ -237,4 +242,5 @@
     }
 </div>
 
+<!-- Подключение иконок Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
