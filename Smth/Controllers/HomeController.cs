@@ -1,7 +1,7 @@
-using Smth.Data;
-using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Smth.Data;
 
 namespace Smth.Controllers
 {

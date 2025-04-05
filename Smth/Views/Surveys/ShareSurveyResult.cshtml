@@ -24,7 +24,8 @@
         position: relative;
         min-height: 100vh;
         display: flex;
-        align-items: flex-start; /* Изменено на выравнивание сверху */
+        align-items: flex-start;
+        /* Изменено на выравнивание сверху */
         justify-content: center;
         padding: 2rem;
     }
@@ -35,7 +36,7 @@
         padding: 3rem;
         max-width: 600px;
         width: 90%;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         position: relative;
         z-index: 2;
         animation: scaleUp 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -79,7 +80,7 @@
     .btn-home:hover {
         background: var(--secondary);
         transform: translateY(-3px);
-        box-shadow: 0 8px 16px rgba(0,191,165,0.3);
+        box-shadow: 0 8px 16px rgba(0, 191, 165, 0.3);
     }
 
     /* Анимации конфетти */
@@ -97,6 +98,7 @@
             transform: translateY(-100vh) rotate(0deg) scale(1);
             opacity: 1;
         }
+
         100% {
             transform: translateY(100vh) rotate(720deg) scale(0);
             opacity: 0;
@@ -108,6 +110,7 @@
             transform: scale(0.8);
             opacity: 0;
         }
+
         to {
             transform: scale(1);
             opacity: 1;
@@ -118,7 +121,7 @@
         .result-box {
             padding: 2rem 1.5rem;
         }
-        
+
         .result-title {
             font-size: 2rem;
         }
@@ -126,31 +129,31 @@
 </style>
 
 <div class="result-container">
-    @if(ViewBag.IsSuccess)
+    @if (ViewBag.IsSuccess)
     {
         <!-- Обновленные конфетти со случайным распределением -->
         @for (int i = 0; i < 30; i++)
         {
             var rnd = new Random();
             <div class="confetti" style="
-                left: @(rnd.Next(0, 100))%;
-                top: @(rnd.Next(-10, 10))%;
-                animation: 
-                    confetti-fall 
-                    @(rnd.Next(3, 6))s 
-                    cubic-bezier(@rnd.NextDouble(),@rnd.NextDouble(),@rnd.NextDouble(),@rnd.NextDouble()) 
-                    @(rnd.NextDouble())s 
-                    infinite;
-                background: hsl(@(rnd.Next(0, 360)), 70%, 50%);
-                width: @(rnd.Next(8, 16))px;
-                height: @(rnd.Next(8, 16))px;
-            "></div>
+                        left: @(rnd.Next(0, 100))%;
+                        top: @(rnd.Next(-10, 10))%;
+                        animation: 
+                            confetti-fall 
+                            @(rnd.Next(3, 6))s 
+                            cubic-bezier(@rnd.NextDouble(),@rnd.NextDouble(),@rnd.NextDouble(),@rnd.NextDouble()) 
+                            @(rnd.NextDouble())s 
+                            infinite;
+                        background: hsl(@(rnd.Next(0, 360)), 70%, 50%);
+                        width: @(rnd.Next(8, 16))px;
+                        height: @(rnd.Next(8, 16))px;
+                    "></div>
         }
     }
     <div class="result-box @(ViewBag.IsSuccess ? "success-bg" : "error-bg")">
         <h2 class="result-title">@(ViewBag.IsSuccess ? "🎉 Успех!" : "❌ Ошибка!")</h2>
         <p class="result-message">@ViewBag.Message</p>
-        
+
         <div class="text-center">
             <a href="@Url.Action("Index", "Home")" class="btn-home">
                 <i class="fas fa-home"></i> На главную

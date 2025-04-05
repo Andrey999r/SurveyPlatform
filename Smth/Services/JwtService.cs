@@ -21,7 +21,7 @@ public class JwtService : IJwt
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-            new Claim("UserId", user.Id.ToString()), 
+            new Claim("UserId", user.Id.ToString()),
 
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
@@ -30,8 +30,8 @@ public class JwtService : IJwt
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: "Issuer", 
-            audience: "Audience", 
+            issuer: "Issuer",
+            audience: "Audience",
             claims: claims,
             expires: DateTime.UtcNow.AddHours(2),
             signingCredentials: credentials);

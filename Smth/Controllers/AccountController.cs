@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Smth.Data;
 using Smth.Interfaces;
 using Smth.Services;
-
+/// <summary>
+/// Контроллер для управления аутентификацией и регистрацией пользователей
+/// </summary>
 namespace Smth.Controllers
 {
     public class AccountController : Controller
@@ -12,6 +14,9 @@ namespace Smth.Controllers
         private readonly IAuth _authService;
         private readonly IJwt _jwtService;
         private readonly IConfiguration _configuration;
+        /// <summary>
+        /// Инициализация зависимостей через Dependency Injection
+        /// </summary>
 
         public AccountController(IAuth authService, IJwt jwtService, IConfiguration configuration)
         {
@@ -19,7 +24,12 @@ namespace Smth.Controllers
             _jwtService = jwtService;
             _configuration = configuration;
         }
-
+        /// <summary>
+        /// Обработка регистрации нового пользователя
+        /// </summary>
+        /// <param name="username">Логин пользователя</param>
+        /// <param name="email">Электронная почта</param>
+        /// <param name="password">Пароль (хэшируется при сохранении)</param>
         [HttpGet]
         public IActionResult Register()
         {
@@ -31,8 +41,11 @@ namespace Smth.Controllers
         {
             try
             {
+                // Создание пользователя и генерация JWT токена
+
                 var user = _authService.Register(username, email, password);
                 var token = _jwtService.GenerateToken(user);
+                // Установка токена в cookies для аутентификации
 
                 Response.Cookies.Append("JwtToken", token, new CookieOptions
                 {
@@ -46,6 +59,8 @@ namespace Smth.Controllers
             }
             catch (Exception ex)
             {
+                // Логирование ошибок и отображение пользователю
+
                 ViewBag.Error = ex.Message;
                 return View();
             }

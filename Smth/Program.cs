@@ -14,6 +14,8 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"];
 
 builder.Services.AddSwaggerGen();
+// Настройка JWT аутентификации
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -21,6 +23,8 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options =>
     {
+        // Параметры валидации токена
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -31,7 +35,7 @@ builder.Services.AddAuthentication(options =>
             ValidAudience = builder.Configuration["JwtSettings:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
         };
-
+        // Получение токена из cookies
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>

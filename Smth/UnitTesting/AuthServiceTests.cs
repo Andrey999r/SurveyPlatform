@@ -61,6 +61,8 @@ public class AuthServiceTests
         var authService = new AuthService(context);
 
         // Act & Assert
+        // Проверка ошибки при попытке входа несуществующего пользователя
+
         Assert.Throws<InvalidOperationException>(() =>
             authService.Login("ghost", "Password123!")
         );
@@ -95,9 +97,12 @@ public class AuthServiceTests
 
         using var context = new ApplicationDbContext(options);
         var authService = new AuthService(context);
+        // Создание первого пользователя
+
         authService.Register("user1", "duplicate@mail.com", "Password123!");
 
         // Act & Assert
+        // Проверка исключения при повторной регистрации с тем же email
         Assert.Throws<InvalidOperationException>(() =>
             authService.Register("user2", "duplicate@mail.com", "Password456!")
         );

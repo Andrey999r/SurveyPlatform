@@ -12,7 +12,7 @@
         --card-bg: #2c2c2c;
         --text: #ffffff;
         --text-light: #BDBDBD;
-        --border-color: rgba(255,255,255,0.1);
+        --border-color: rgba(255, 255, 255, 0.1);
     }
 
     body {
@@ -21,7 +21,8 @@
         font-family: 'Segoe UI', sans-serif;
     }
 
-    h2, h3 {
+    h2,
+    h3 {
         color: var(--primary);
         text-align: center;
         margin-bottom: 2rem;
@@ -41,14 +42,14 @@
         border-radius: 12px;
         padding: 2rem;
         margin-bottom: 2rem;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         border: 1px solid var(--border-color);
     }
 
     .detail-item {
         margin-bottom: 1.5rem;
         padding: 1rem;
-        background: rgba(255,255,255,0.03);
+        background: rgba(255, 255, 255, 0.03);
         border-radius: 8px;
     }
 
@@ -62,7 +63,7 @@
     input[type="email"] {
         flex-grow: 1;
         padding: 0.8rem 1.2rem;
-        background: rgba(255,255,255,0.05);
+        background: rgba(255, 255, 255, 0.05);
         border: 2px solid var(--border-color);
         border-radius: 8px;
         color: var(--text);
@@ -71,7 +72,7 @@
 
     input[type="email"]:focus {
         border-color: var(--primary);
-        box-shadow: 0 0 15px rgba(0,191,165,0.2);
+        box-shadow: 0 0 15px rgba(0, 191, 165, 0.2);
     }
 
     button {
@@ -88,7 +89,7 @@
     button:hover {
         background: var(--secondary);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,191,165,0.3);
+        box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
     }
 
     .answers-table {
@@ -97,7 +98,7 @@
         background: var(--card-bg);
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         animation: fadeIn 0.6s ease;
     }
 
@@ -109,7 +110,7 @@
     }
 
     .answers-table th {
-        background: rgba(0,191,165,0.15);
+        background: rgba(0, 191, 165, 0.15);
         color: var(--primary);
         font-weight: 600;
         text-transform: uppercase;
@@ -120,37 +121,49 @@
     }
 
     .answers-table tr:hover {
-        background: rgba(255,255,255,0.03);
+        background: rgba(255, 255, 255, 0.03);
         transform: translateX(8px);
     }
 
     .message {
         padding: 1rem;
-        background: rgba(0,191,165,0.1);
+        background: rgba(0, 191, 165, 0.1);
         border-radius: 8px;
         color: var(--primary);
         animation: fadeIn 0.5s ease;
     }
 
     @@keyframes cardEntrance {
-        from { opacity: 0; transform: translateY(30px) scale(0.95); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
 
     @@keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     @@media (max-width: 768px) {
         .info-container {
             padding: 1rem;
         }
-        
+
         .email-form {
             flex-direction: column;
         }
-        
+
         .answers-table {
             display: block;
             overflow-x: auto;

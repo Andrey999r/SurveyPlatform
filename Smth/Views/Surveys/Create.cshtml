@@ -3,6 +3,7 @@
 }
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
@@ -29,7 +30,8 @@
             padding: 0;
         }
 
-        h2, h3 {
+        h2,
+        h3 {
             color: var(--primary);
             margin-bottom: 1rem;
             font-weight: 600;
@@ -43,7 +45,7 @@
             padding: 2rem;
             background: var(--card-bg);
             border-radius: 16px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
             animation: fadeIn 0.6s ease-out;
         }
 
@@ -135,11 +137,14 @@
             box-shadow: 0 4px 14px rgba(0, 191, 165, 0.3);
         }
 
+        /* Анимация появления элементов */
+
         @@keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -153,8 +158,10 @@
         }
     </style>
 </head>
+
 <body>
     <h2>Создать опрос</h2>
+    <!-- Основной контейнер формы создания опроса -->
 
     <form method="post" class="create-survey-form">
         <!-- Название опроса -->
@@ -194,28 +201,33 @@
     </form>
 
     @section Scripts {
-    <script>
-        function addQuestion() {
-            const container = document.getElementById("questions-container");
-            const count = container.querySelectorAll('.question-row').length + 1;
-            const row = document.createElement('div');
-            row.className = 'question-row';
-            row.innerHTML = `
-                <input type="text" name="questions" placeholder="Вопрос ${count}" class="question-input" required />
-                <button type="button" class="remove-question-btn" onclick="removeQuestion(this)">✕</button>`;
-            container.appendChild(row);
-        }
+        <script>
+            // Динамическое добавление новых вопросов в опрос
 
-        function removeQuestion(btn) {
-            const row = btn.parentNode;
-            const container = document.getElementById("questions-container");
-            container.removeChild(row);
-            const rows = container.querySelectorAll('.question-row');
-            rows.forEach((r, i) => {
-                r.querySelector('.question-input').placeholder = 'Вопрос ' + (i + 1);
-            });
-        }
-    </script>
+            function addQuestion() {
+                const container = document.getElementById("questions-container");
+                const count = container.querySelectorAll('.question-row').length + 1;
+                // Создание HTML-элемента для нового вопроса
+
+                const row = document.createElement('div');
+                row.className = 'question-row';
+                row.innerHTML = `
+                        <input type="text" name="questions" placeholder="Вопрос ${count}" class="question-input" required />
+                        <button type="button" class="remove-question-btn" onclick="removeQuestion(this)">✕</button>`;
+                container.appendChild(row);
+            }
+
+            function removeQuestion(btn) {
+                const row = btn.parentNode;
+                const container = document.getElementById("questions-container");
+                container.removeChild(row);
+                const rows = container.querySelectorAll('.question-row');
+                rows.forEach((r, i) => {
+                    r.querySelector('.question-input').placeholder = 'Вопрос ' + (i + 1);
+                });
+            }
+        </script>
     }
 </body>
+
 </html>
