@@ -1,7 +1,16 @@
 ﻿@model List<Smth.Data.Survey>
+
 @{
-    ViewBag.Title = "Мои опросы";
+    /* признак администратора */
+    bool isAdmin      = User.IsInRole("Admin");
+
+    /* активная вкладка — «Created» */
+    ViewBag.ActiveTab = "Created";
+
+    /* динамический заголовок окна браузера */
+    ViewBag.Title     = isAdmin ? "Все опросы" : "Мои опросы";
 }
+
 
 <!-- Стили для страницы -->
 <style>
@@ -53,6 +62,7 @@
         margin-bottom: 2rem;
         font-weight: 700;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        border-bottom:none !important;
     }
 
     /* Контейнер для вкладок */
@@ -199,27 +209,43 @@
 
 <!-- Основная разметка страницы -->
 <div class="main-container">
-    <h1 class="page-title">Мои опросы</h1>
 
-    <!-- Вкладки для переключения между разделами -->
+    <!-- Заголовок -->
+    <h1 class="page-title">
+        @(isAdmin ? "Все опросы" : "Мои опросы")
+    </h1>
+
+    <!-- Вкладки -->
     <div class="tab-container">
-        <a href="/Surveys/Created" class="tab-button @(ViewBag.ActiveTab == "Created" ? "active" : "")">
-            <i class="fas fa-plus-circle"></i>Созданные
+        <a href="/Surveys/Created"
+           class="tab-button @(ViewBag.ActiveTab=="Created" ? "active":"")">
+            <i class="fas fa-plus-circle"></i>
+            @(isAdmin ? "Все опросы" : "Созданные")
         </a>
-        <a href="/Surveys/Completed" class="tab-button @(ViewBag.ActiveTab == "Completed" ? "active" : "")">
-            <i class="fas fa-check-circle mr-1"></i>Пройденные
+
+        <a href="/Surveys/Completed"
+           class="tab-button @(ViewBag.ActiveTab=="Completed" ? "active":"")">
+            <i class="fas fa-check-circle"></i> Пройденные
         </a>
+
+        @if (isAdmin)
+        {
+            <a href="/Surveys/Users"
+               class="tab-button @(ViewBag.ActiveTab=="Users" ? "active":"")">
+                <i class="fas fa-users"></i> Пользователи
+            </a>
+        }
     </div>
 
-    <!-- Сетка с карточками опросов -->
+    <!-- Карточки опросов -->
     <div class="surveys-grid">
         @foreach (var survey in Model)
         {
             <div class="survey-card">
-                <div class="survey-header">
-                    <h3 class="survey-title">@survey.Name</h3>
-                </div>
-                <p class="survey-description">@(survey.Description ?? "Описание отсутствует")</p>
+                <h3 class="survey-title">@survey.Name</h3>
+                <p class="survey-description">
+                    @(survey.Description ?? "Описание отсутствует")
+                </p>
                 <div class="survey-actions">
                     <a href="/Surveys/Details/@survey.Id" class="btn btn-primary">
                         <i class="fas fa-eye"></i> Подробнее
@@ -229,18 +255,19 @@
         }
     </div>
 
-    <!-- Блок для пустого состояния -->
+    <!-- Пустой список -->
     @if (!Model.Any())
     {
         <div class="empty-state">
             <i class="fas fa-clipboard-list fa-3x"></i>
-            <p>Пока нет ни одного опроса</p>
+            <p>@(isAdmin ? "Опросов пока нет" : "Пока нет ни одного опроса")</p>
+
             <a href="/Surveys/Create" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Создать первый опрос
+                <i class="fas fa-plus"></i> Создать опрос
             </a>
         </div>
     }
 </div>
 
-<!-- Подключение иконок Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

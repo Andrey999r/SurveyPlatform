@@ -1,247 +1,123 @@
 @model Smth.ViewModel.ParticipantViewModel
 @{
-    // Устанавливаем заголовок страницы через ViewData
     ViewData["Title"] = "Информация об участнике";
 }
 
-<!-- Определяем стили для страницы "Информация об участнике" -->
 <style>
-    /* Основные переменные для оформления */
-    :root {
-        --primary: #00BFA5;         /* Основной цвет */
-        --secondary: #009688;       /* Вторичный цвет */
-        --background: #1d1d1d;       /* Фоновый цвет страницы */
-        --card-bg: #2c2c2c;         /* Цвет фона карточек */
-        --text: #ffffff;            /* Основной цвет текста */
-        --text-light: #BDBDBD;      /* Светлый оттенок для текста */
-        --border-color: rgba(255, 255, 255, 0.1); /* Цвет границ элементов */
-    }
+:root{--primary:#00BFA5;--secondary:#009688;--background:#1d1d1d;
+      --card-bg:#2c2c2c;--text:#fff;--text-light:#BDBDBD;
+      --border-color:rgba(255,255,255,.1);}
 
-    /* Стили для body: задаются фон, цвет текста и шрифт */
-    body {
-        background: var(--background);
-        color: var(--text);
-        font-family: 'Segoe UI', sans-serif;
-    }
+body{background:var(--background);color:var(--text);font-family:'Segoe UI',sans-serif}
 
-    /* Стили заголовков h2 и h3 с анимацией появления */
-    h2,
-    h3 {
-        color: var(--primary);
-        text-align: center;
-        margin-bottom: 2rem;
-        font-weight: 600;
-        animation: fadeIn 0.8s ease;
-    }
+h2,h3{color:var(--primary);text-align:center;margin-bottom:2rem;font-weight:600}
 
-    /* Контейнер для всей информации об участнике */
-    .info-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-        animation: cardEntrance 0.6s ease;
-    }
+.participant-info{background:var(--card-bg);border-radius:12px;padding:2rem;margin-bottom:2rem;
+                  box-shadow:0 8px 24px rgba(0,0,0,.2)}
 
-    /* Карточка, содержащая информацию об участнике */
-    .participant-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        border: 1px solid var(--border-color);
-    }
+.participant-info p{margin:1rem 0;font-size:1.1rem}
 
-    /* Элемент с подробной информацией, например, имя участника */
-    .detail-item {
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 8px;
-    }
+.answers-table{width:100%;border-collapse:collapse;background:var(--card-bg);
+               border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.12)}
 
-    /* Форма для обновления email участника */
-    .email-form {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        margin: 2rem 0;
-    }
+.answers-table col.question-col{width:40%}
+.answers-table col.answer-col  {width:60%}
 
-    /* Стили для поля ввода email */
-    input[type="email"] {
-        flex-grow: 1;
-        padding: 0.8rem 1.2rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 2px solid var(--border-color);
-        border-radius: 8px;
-        color: var(--text);
-        transition: all 0.3s ease;
-    }
+.answers-table th,.answers-table td{padding:1.1rem 1.3rem;border-bottom:1px solid var(--border-color)}
+.answers-table th{background:rgba(0,191,165,.15);color:var(--primary);font-weight:600;text-transform:uppercase}
+.answers-table td{vertical-align:top}
 
-    /* Стили для поля ввода email при фокусе */
-    input[type="email"]:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 15px rgba(0, 191, 165, 0.2);
-    }
+.answers-table tr:hover{background:rgba(255,255,255,.025)}
 
-    /* Стили для кнопок */
-    button {
-        padding: 0.8rem 1.5rem;
-        background: var(--primary);
-        color: #111;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
+.answers-table input[type="text"]{width:100%;box-sizing:border-box;padding:.6rem 1rem;
+                                  background:#202020;border:1px solid var(--border-color);
+                                  color:var(--text);border-radius:6px;outline:none}
+.answers-table input[type="text"]:focus{border-color:var(--primary);box-shadow:0 0 6px rgba(0,191,165,.4)}
 
-    /* Стили для кнопок при наведении */
-    button:hover {
-        background: var(--secondary);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 191, 165, 0.3);
-    }
+.actions-row{display:flex;gap:1rem;margin-top:1.7rem}
 
-    /* Таблица для отображения ответов участника */
-    .answers-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: var(--card-bg);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.6s ease;
-    }
+.save-btn,.back-btn{display:inline-flex;align-items:center;gap:.6rem;padding:1rem 2rem;
+                    font-weight:600;border-radius:8px;text-decoration:none;transition:.25s}
 
-    /* Стили для ячеек таблицы (заголовки и данные) */
-    .answers-table th,
-    .answers-table td {
-        padding: 1.2rem;
-        border-bottom: 1px solid var(--border-color);
-        text-align: left;
-    }
+.save-btn{background:var(--primary);color:#111;border:none;cursor:pointer}
+.back-btn{background:transparent;color:var(--primary);border:2px solid var(--primary)}
 
-    /* Стили заголовков таблицы */
-    .answers-table th {
-        background: rgba(0, 191, 165, 0.15);
-        color: var(--primary);
-        font-weight: 600;
-        text-transform: uppercase;
-    }
+.back-btn:hover{background:var(--primary);color:#111}
+.save-btn:hover{background:var(--secondary)}
 
-    /* Анимация строк таблицы при наведении */
-    .answers-table tr {
-        transition: all 0.3s ease;
-    }
+.message{padding:1rem;background:rgba(0,191,165,.1);border-radius:8px;color:var(--primary)}
 
-    .answers-table tr:hover {
-        background: rgba(255, 255, 255, 0.03);
-        transform: translateX(8px);
-    }
-
-    /* Стили для сообщений (например, сообщение об отсутствии ответов) */
-    .message {
-        padding: 1rem;
-        background: rgba(0, 191, 165, 0.1);
-        border-radius: 8px;
-        color: var(--primary);
-        animation: fadeIn 0.5s ease;
-    }
-
-    /* Анимация появления карточки */
-    @@keyframes cardEntrance {
-        from {
-            opacity: 0;
-            transform: translateY(30px) scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-
-    /* Анимация плавного появления */
-    @@keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    /* Адаптивные стили для устройств с маленьким экраном */
-    @@media (max-width: 768px) {
-        .info-container {
-            padding: 1rem;
-        }
-        .email-form {
-            flex-direction: column;
-        }
-        .answers-table {
-            display: block;
-            overflow-x: auto;
-        }
-    }
+@@media(max-width:768px){
+    .answers-table{display:block;overflow-x:auto}
+}
 </style>
 
-<!-- Основной контейнер информации об участнике -->
-<div class="info-container">
-    <!-- Заголовок страницы, отображающий название -->
-    <h2>@ViewData["Title"]</h2>
+<div class="main-container">
+    <h2>Опрос: @Model.SurveyName</h2>
 
-    <!-- Карточка с информацией об участнике -->
-    <div class="participant-card">
-        <!-- Элемент с именем участника -->
-        <div class="detail-item">
-            <strong>Имя:</strong> @Model.ParticipantName
-        </div>
-
-        <!-- Форма для обновления email участника -->
-        <form class="email-form" asp-action="UpdateEmail" method="post">
-            <!-- Скрытое поле для передачи идентификатора участника -->
-            <input type="hidden" name="Id" value="@Model.Id" />
-            <!-- Поле для ввода email с текущим значением -->
-            <input type="email" id="email" name="Email" value="@Model.Email" placeholder="Введите email" required />
-            <!-- Кнопка отправки формы для обновления email -->
-            <button type="submit">Обновить Email</button>
-        </form>
-
-        <!-- Вывод сообщения об успешном обновлении email, если оно имеется -->
-        @if (TempData["Message"] != null)
-        {
-            <div class="message">@TempData["Message"]</div>
-        }
+    <div class="participant-info">
+        <p><strong>Имя участника:</strong> @Model.ParticipantName</p>
+        <p><strong>Email:</strong> @Model.Email</p>
     </div>
 
-    <!-- Заголовок секции с ответами участника -->
-    <h3>Ответы на опросы</h3>
-    <!-- Если у участника есть ответы, отображаем таблицу с ответами -->
-    @if (Model.Answers.Any())
+    <h3>Ответы:</h3>
+
+    @if (!Model.Answers.Any())
     {
-        <table class="answers-table">
-            <thead>
-                <tr>
-                    <th>Вопрос</th>
-                    <th>Ответ</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var answer in Model.Answers)
-                {
-                    <tr>
-                        <td>@answer.Text</td>
-                        <td>@answer.ResponseText</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="message">Ответов не найдено</div>
     }
     else
     {
-        <!-- Если ответов нет, выводим сообщение об отсутствии данных -->
-        <div class="message">Нет данных о пройденных опросах</div>
+        <form asp-action="UpdateAnswers" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id"/>
+
+            <table class="answers-table">
+                <colgroup>
+                    <col class="question-col"/>
+                    <col class="answer-col"/>
+                </colgroup>
+                <thead><tr><th>Вопрос</th><th>Ответ</th></tr></thead>
+                <tbody>
+                @for (int i = 0; i < Model.Answers.Count; i++)
+                {
+                    <tr>
+                        <td><strong>@Model.Answers[i].Text</strong></td>
+                        <td>
+                            @if (Model.CanEdit)
+                            {
+                                <input type="hidden" name="Answers[@i].Id" value="@Model.Answers[i].Id"/>
+                                <input type="text"   name="Answers[@i].ResponseText"
+                                                     value="@Model.Answers[i].ResponseText"/>
+                            }
+                            else
+                            {
+                                @Model.Answers[i].ResponseText
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <div class="actions-row">
+                @if (Model.CanEdit)
+                {
+                    <button type="submit" class="save-btn">
+                        <i class="fas fa-save"></i> Сохранить изменения
+                    </button>
+                }
+
+                <a asp-action="@ViewBag.BackAction"
+                   asp-controller="Surveys"
+                   asp-route-id="@ViewBag.BackId"
+                   class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </a>
+            </div>
+        </form>
     }
 </div>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

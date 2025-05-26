@@ -17,7 +17,7 @@ namespace Smth.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -62,6 +62,10 @@ namespace Smth.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -155,8 +159,7 @@ namespace Smth.Migrations
                 {
                     b.HasOne("Smth.Data.Participant", "Participant")
                         .WithMany("Answers")
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ParticipantId");
 
                     b.HasOne("Smth.Data.Question", "Question")
                         .WithMany()

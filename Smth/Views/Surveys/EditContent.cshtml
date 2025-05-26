@@ -1,0 +1,99 @@
+@model Smth.ViewModel.EditSurveyViewModel
+@{
+    ViewBag.Title = "Редактирование опроса";
+}
+
+<style>
+:root{
+    --primary:#00BFA5;--secondary:#009688;--background:#1d1d1d;
+    --card-bg:#2c2c2c;--text:#fff;--text-light:#BDBDBD;
+    --border-color:rgba(255,255,255,.1);
+}
+
+body{background:var(--background);color:var(--text);font-family:'Segoe UI',sans-serif}
+
+.main-container{max-width:1100px;margin:0 auto;padding:2rem}
+.page-title{
+    font-size:2.5rem;font-weight:700;color:var(--primary);
+    text-align:center;margin-bottom:2rem;border-bottom:none;     /* убрали тонкую линию */
+}
+
+.edit-form{
+    background:var(--card-bg);padding:2rem;border-radius:12px;
+    box-shadow:0 6px 14px rgba(0,0,0,.15)
+}
+
+.form-group{margin-bottom:1.5rem}
+label{display:block;margin-bottom:.5rem;font-weight:600;color:var(--text-light)}
+input[type=text],textarea{
+    width:100%;background:#202020;color:var(--text);
+    border:1px solid var(--border-color);border-radius:8px;
+    padding:.8rem 1rem;box-sizing:border-box}
+textarea{resize:vertical;min-height:120px}
+
+/* блок «Вопросы» */
+.section-title{color:var(--primary);margin:2rem 0 .9rem;font-size:1.25rem;font-weight:600}
+.questions-grid{
+    display:grid;gap:1.2rem;grid-template-columns:1fr        /* mobile */
+}
+@@media(min-width:992px){.questions-grid{grid-template-columns:repeat(2,1fr)}}
+
+.question-card{
+    background:#202020;border:1px solid var(--border-color);border-radius:10px;
+    padding:1rem;display:flex;flex-direction:column
+}
+.question-card label{margin-bottom:.6rem;font-weight:500;color:var(--primary)}
+
+/* кнопки стиля, совпадающего с другими страницами */
+.btn{display:inline-flex;align-items:center;gap:.6rem;font-weight:600;
+     padding:1rem 2rem;border-radius:8px;transition:.25s;font-size:.95rem}
+.save-btn{background:var(--primary);color:#111;border:none}
+.cancel-btn{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.save-btn:hover  {background:var(--secondary)}
+.cancel-btn:hover{background:var(--primary);color:#111}
+
+.actions-row{display:flex;gap:1rem;justify-content:flex-end;margin-top:2.2rem}
+</style>
+
+<div class="main-container">
+    <h1 class="page-title"><i class="fas fa-pen-to-square"></i> Редактирование опроса</h1>
+
+    <form asp-action="EditContent" method="post" class="edit-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id"/>
+
+        <div class="form-group">
+            <label asp-for="Name">Название</label>
+            <input type="text" asp-for="Name"/>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">Описание</label>
+            <textarea asp-for="Description"></textarea>
+        </div>
+
+        <div class="section-title">Вопросы</div>
+        <div class="questions-grid">
+            @for (int i = 0; i < Model.Questions.Count; i++)
+            {
+                <div class="question-card">
+                    <input type="hidden" asp-for="Questions[@i].Id"/>
+                    <label>Вопрос @(i + 1)</label>
+                    <textarea asp-for="Questions[@i].Text"></textarea>
+                </div>
+            }
+        </div>
+
+        <div class="actions-row">
+            <button type="submit" class="btn save-btn">
+                <i class="fas fa-save"></i> Сохранить
+            </button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn cancel-btn">
+                Отмена
+            </a>
+        </div>
+    </form>
+</div>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

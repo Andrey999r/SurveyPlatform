@@ -23,6 +23,7 @@ public class ParticipantViewModel
 
     public string Email { get; set; } = string.Empty; // Email участника
     public List<AnswerViewModel> Answers { get; set; } = new(); // Список ответов участника
+    public bool CanEdit { get; set; } = false;
 }
 
 /// <summary>
@@ -30,6 +31,8 @@ public class ParticipantViewModel
 /// </summary>
 public class AnswerViewModel
 {
+    public int    Id   { get; set; }          // ← добавили Id строки Answer
+
     public string Text { get; set; }     // Текст вопроса (из связанной сущности Question)
     public string ResponseText { get; set; } // Текст ответа участника
 }
@@ -43,3 +46,18 @@ public class ThankYouViewModel
     public string Email { get; set; }         // Email участника
     public DateTime CompletedAt { get; set; } // Дата и время завершения опроса
 }
+    public class EditSurveyViewModel
+    {
+        public int    Id          { get; set; }
+        public string Name        { get; set; }
+        public string Description { get; set; }
+
+        public List<QuestionEditModel> Questions { get; set; } = new();
+    }
+
+    /// <summary>Парочка «Id + Text» одного вопроса.</summary>
+    public class QuestionEditModel
+    {
+        public int    Id   { get; set; }
+        public string Text { get; set; }
+    }

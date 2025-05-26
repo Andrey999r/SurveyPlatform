@@ -31,5 +31,7 @@
         /// Список опросов, созданных пользователем.
         /// </summary>
         public List<Survey> Surveys { get; set; } = new List<Survey>();
+        public string Role { get; set; } = "User";
+
     }
 }

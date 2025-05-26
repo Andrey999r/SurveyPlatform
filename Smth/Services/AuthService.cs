@@ -50,7 +50,9 @@ namespace Smth.Services
             {
                 Username = username,
                 Email = email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
+                Role = "User"               // <-- явное присваивание
+
             };
 
             // Добавление нового пользователя в контекст и сохранение изменений в базе данных

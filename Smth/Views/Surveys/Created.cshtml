@@ -1,8 +1,12 @@
 @model List<Smth.Data.Survey>
+
 @{
-    // Устанавливаем активную вкладку и заголовок страницы для созданных опросов
     ViewBag.ActiveTab = "Created";
-    ViewBag.Title = "Созданные опросы";
+
+    bool   isAdmin   = User.IsInRole("Admin");
+    string pageTitle = isAdmin ? "Все опросы" : "Созданные опросы";
+
+    ViewBag.Title = pageTitle;
 }
 
 <!-- Определяем стили для страницы -->
@@ -166,8 +170,7 @@
 </style>
 
 <!-- Заголовок страницы "Созданные опросы" -->
-<h2>Созданные опросы</h2>
-
+<h2>@pageTitle</h2>
 <!-- Контейнер для ссылки создания нового опроса -->
 <div class="create-survey-container">
     <a class="create-survey-link" href="/Surveys/Create">

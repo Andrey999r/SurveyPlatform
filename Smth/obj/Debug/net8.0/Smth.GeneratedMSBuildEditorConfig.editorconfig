@@ -68,6 +68,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VydmV5c1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/gyman/RiderProjects/CrudNetCore/Smth/Views/Surveys/EditContent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VydmV5c1xFZGl0Q29udGVudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/gyman/RiderProjects/CrudNetCore/Smth/Views/Surveys/Info.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VydmV5c1xJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -90,6 +94,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/gyman/RiderProjects/CrudNetCore/Smth/Views/Surveys/ThankYou.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VydmV5c1xUaGFua1lvdS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/gyman/RiderProjects/CrudNetCore/Smth/Views/Surveys/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VydmV5c1xVc2Vycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/gyman/RiderProjects/CrudNetCore/Smth/Views/Surveys/UserSurveys.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VydmV5c1xVc2VyU3VydmV5cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/gyman/RiderProjects/CrudNetCore/Smth/Views/_ViewImports.cshtml]

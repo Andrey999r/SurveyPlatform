@@ -51,7 +51,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAuth, AuthService>();
@@ -75,6 +78,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

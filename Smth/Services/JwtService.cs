@@ -29,12 +29,15 @@ public class JwtService : IJwt
     {
         // Определяем набор утверждений (claims) для токена.
         // Здесь мы используем имя пользователя и уникальный идентификатор пользователя.
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-            new Claim("UserId", user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+        // Smth.Services/JwtService.cs  (GenerateToken)
+    var claims = new[]
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+        new Claim("UserId", user.Id.ToString()),
+        new Claim(ClaimTypes.Role, user.Role),          // NEW
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
+
 
         // Ключ для подписи токена. В реальном приложении его лучше хранить в безопасном месте (например, в конфигурации).
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("W9x4ABgt8Hh8htT5M2ecnb2E3Zn-il4fRNjHKFbziec"));
